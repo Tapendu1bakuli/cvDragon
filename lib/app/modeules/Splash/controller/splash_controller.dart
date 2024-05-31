@@ -11,6 +11,9 @@ class SplashController extends GetxController{
   RxBool isLoading = false.obs;
   void onReady() {
     print("OnReady");
+    if(HiveStore().getBool(Keys.ISDARK) == null){
+      HiveStore().setBool(Keys.ISDARK,false);
+    }
     HiveStore().getBool(Keys.ISDARK) == true?
     Get.changeThemeMode(ThemeMode.dark):Get.changeThemeMode(ThemeMode.light);
     SystemChannels.textInput.invokeMethod('TextInput.hide');

@@ -2,9 +2,22 @@ class AppStrings{
   //Nuritopia
   static const String welcomeToNuritopia = "Welcome to NURITOPIA 2D";
   static const String welcomeToCVDragon = "Welcome to cvDragon";
+  static const String updateDetails = "Update details";
   static const String toggleBetweenTheme = "Choose Theme";
   static const String light = "Light";
   static const String dark = "Dark";
+  static const String insertVlog = "Insert vlog:";
+  static const String addVlog = "Add vlog";
+  static const String updateVlog = "Update vlog";
+  static const String enterTitle = "Enter Title";
+  static const String enterDescription = "Enter Description";
+  static const String vlogsListIsEmpty = "Vlogs list is empty.";
+  static const String title = "Title: ";
+  static const String description = "Description: ";
+  static const String updateDatabase = "Update database";
+  static const String needADescription = "Need a description to submit.";
+  static const String needATitle = "Need a title to submit.";
+  static const String somethingWentWrong = "Something went wrong!";
   static const String nuritopiaWebLink = "https://nuritopia.com/";
   static const String nominatedAndWinning = "The nominated & winning videos get rewarded";
   static const String connectWithMe = "Connect with me in the Metaverse";

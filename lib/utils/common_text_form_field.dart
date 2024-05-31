@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field/phone_number.dart';
-import 'package:nurotupia_2d/common/ui.dart';
-import 'package:nurotupia_2d/device_manager/screen_constants.dart';
-import 'package:nurotupia_2d/utils/image_utils/image_utils.dart';
-import 'package:sizing/sizing.dart';
+import '../device_manager/screen_constants.dart';
 import '../utils/TextStyles.dart';
 import '../utils/colors/app_colors.dart';
-import '../utils/fonts.dart';
-import '../utils/text_utils/app_strings.dart';
+import 'image_utils/image_utils.dart';
 
 enum Type {
   textFieldWithOutSuffix,
@@ -17,6 +11,7 @@ enum Type {
   searchField,
   emailFieldWithOutPrefixAndSuffix,
   stageName,
+  description,
 }
 
 class DefaultEditText extends StatefulWidget {
@@ -36,7 +31,6 @@ class DefaultEditText extends StatefulWidget {
   final Widget? prefixIcon;
   final Widget? suffix;
   final String? errorText;
-  final ValueChanged<PhoneNumber>? onChangedPhone;
   final TextEditingController? controller;
   final caption;
   final FocusNode? myFocusNode;
@@ -84,7 +78,6 @@ class DefaultEditText extends StatefulWidget {
       this.validator,
       this.readOnly = false,
       required this.type,
-      this.onChangedPhone,
       this.controller,
       this.caption,
       this.myFocusNode,
@@ -226,6 +219,56 @@ class _DefaultEditTextState extends State<DefaultEditText> {
                 counterText: widget.errorText,
               ));
         }
+      case Type.description: {
+        return TextFormField(
+          onSaved: widget.onSaved,
+          onChanged: widget.onChanged,
+          initialValue: widget.initialValue,
+          controller: widget.controller,
+          //validator: passwordValidator,
+          keyboardType: TextInputType.text,
+          autofocus: false,
+          maxLines: 4,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          style: TextStyles.hintTextStyle.copyWith(color: CustomColor.secondaryBlack,fontSize: 16),
+          decoration: InputDecoration(
+            fillColor: CustomColor.fillOffWhiteColor,
+            filled: true,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            labelText: widget.labelText,
+            hintText: widget.hintText ?? '',
+            hintStyle: TextStyles.hintTextStyle.copyWith(color: CustomColor.secondaryBlack,fontSize: 16),
+            prefixIcon: widget.prefixIcon,
+            prefixIconConstraints: widget.iconData != null
+                ? BoxConstraints.expand(
+                width: ScreenConstant.defaultWidthTwenty,
+                height: ScreenConstant.defaultWidthTwenty)
+                : BoxConstraints.expand(
+                width: ScreenConstant.defaultWidthTwenty, height: 0),
+            labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Get.theme.colorScheme.onSurface,
+                fontFamily: 'NunitoSans'),
+            contentPadding: EdgeInsets.symmetric(
+                vertical: ScreenConstant.defaultHeightTwentyThree-5),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(
+                  color: CustomColor.primaryBlue.withOpacity(0.6),
+                  width: 2,
+                )),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                  color: CustomColor.primaryBlue.withOpacity(0.4), width: 2),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                  color: CustomColor.primaryBlue, width: 2),
+            ),
+          ),
+        );
+      }
       case Type.textFieldWithSuffix:
         {
           return TextFormField(
@@ -410,6 +453,7 @@ class _DefaultEditTextState extends State<DefaultEditText> {
             onSaved: widget.onSaved,
             onChanged: widget.onChanged,
             initialValue: widget.initialValue,
+            controller: widget.controller,
             //validator: passwordValidator,
             keyboardType: TextInputType.text,
             autofocus: false,

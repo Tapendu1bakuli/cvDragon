@@ -1,5 +1,6 @@
 import 'package:cv_dragon/app/modeules/Home/binding/home_binding.dart';
 import 'package:cv_dragon/app/modeules/Home/views/home_screen.dart';
+import 'package:cv_dragon/app/modeules/Home/views/update_details_screen.dart';
 import 'package:cv_dragon/routes/routes.dart';
 import 'package:get/get.dart';
 import '../app/modeules/Splash/binding/splash_binding.dart';
@@ -18,6 +19,11 @@ class Theme1AppPages {
     GetPage(
       name: Routes.HOME,
       page: () => const HomeScreen(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.UPDATEDETAILS,
+      page: () => const UpdateDetailsScreen(),
       binding: HomeBinding(),
     ),
   ];

@@ -25,7 +25,7 @@ class SplashScreen extends GetView<SplashController> {
                 child: Lottie.asset(AnimationUtilis.splashAnimation)),
             Text(
               AppStrings.welcomeToCVDragon,
-              style: TextStyles.carousalSubTitleWidgetBlueText,
+              style: context.textTheme.headlineMedium,
             )
           ],
         ),
