@@ -211,10 +211,6 @@ class HomeScreen extends GetView<HomeController> {
                                               .value = selectedImage!.name;
                                           controller.temporaryDocImagePath
                                               .value = selectedImage.path;
-                                          bytes =
-                                              await selectedImage.readAsBytes();
-                                          controller.base64String.value =
-                                              base64.encode(bytes);
                                         });
                                       },
                                       color: Get.theme.dividerColor,
@@ -261,7 +257,7 @@ class HomeScreen extends GetView<HomeController> {
                                   if (controller
                                       .descController.text.isNotEmpty) {
                                     if (controller
-                                        .base64String.value.isNotEmpty) {
+                                        .temporaryDocImagePath.value.isNotEmpty) {
                                       controller.addData(
                                           controller.titleController.text,
                                           controller.descController.text,
@@ -269,7 +265,6 @@ class HomeScreen extends GetView<HomeController> {
                                               .temporaryDocImagePath.value);
                                       controller.descController.text = "";
                                       controller.titleController.text = "";
-                                      controller.base64String.value = "";
                                       controller.temporaryDocImagePath.value =
                                           "";
                                       controller.temporaryDocImageName.value =

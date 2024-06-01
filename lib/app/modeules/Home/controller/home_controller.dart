@@ -4,22 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController with GetSingleTickerProviderStateMixin{
-
+  //for controlling the smooth animation while showing the home and drawer.
   late final AnimationController animationController;
-
+  //for toggle between drawer and home UI.
   RxBool toggleValue = false.obs;
+  //for fetching all data from db.
   RxList<Map<String, dynamic>> allData = <Map<String, dynamic>>[].obs;
+  //for showing circular progress indicator if needed while loading some data .
   RxBool isLoading = false.obs;
-
+  //variables for all the text form fields.
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   final TextEditingController titleEditController = TextEditingController();
   final TextEditingController descEditController = TextEditingController();
-
+  //variables for storing the image path and image name after get the image either from gallery or camera.
   RxString temporaryDocImageName = "".obs;
   RxString temporaryDocImagePath = "".obs;
 
-  RxString base64String = "".obs;
 
 @override
   void onInit() {
