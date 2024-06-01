@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
+import 'package:cv_dragon/app/modeules/Home/widgets/home_card_widget.dart';
 import 'package:cv_dragon/device_manager/screen_constants.dart';
 import 'package:cv_dragon/utils/Store/HiveStore.dart';
 import 'package:cv_dragon/utils/text_utils/app_strings.dart';
@@ -106,78 +107,71 @@ class HomeScreen extends GetView<HomeController> {
               Container(
                 height: ScreenConstant.defaultHeightTen,
               ),
-              Obx(()=> controller
-                    .temporaryDocImagePath
-                    .value.isEmpty?const Offstage():Center(
-                  child: ClipRRect(
-                    borderRadius:
-                    BorderRadius.circular(20),
-                    child: SizedBox(
-                      height: ScreenConstant
-                          .defaultHeightOneForty,
-                      width: ScreenConstant
-                          .defaultWidthOneSeventy,
-                      child: Image.file(
-                        fit: BoxFit.fitWidth,
-                        File(controller.temporaryDocImagePath.value),
+              Obx(
+                () => controller.temporaryDocImagePath.value.isEmpty
+                    ? const Offstage()
+                    : Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: SizedBox(
+                            height: ScreenConstant.defaultHeightOneForty,
+                            width: ScreenConstant.defaultWidthOneSeventy,
+                            child: Image.file(
+                              fit: BoxFit.fitWidth,
+                              File(controller.temporaryDocImagePath.value),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
               ),
-              Obx(()=> controller
-                    .temporaryDocImagePath
-                    .value.isEmpty?const Offstage():Container(
-                  height: ScreenConstant.defaultHeightTen,
-                ),
+              Obx(
+                () => controller.temporaryDocImagePath.value.isEmpty
+                    ? const Offstage()
+                    : Container(
+                        height: ScreenConstant.defaultHeightTen,
+                      ),
               ),
-              Obx(()=> controller
-                    .temporaryDocImagePath
-                    .value.isEmpty?UniversalButtonWidget(
-                  ontap: () {
-                    chooseCameraOrGalleryModalBottomSheetMenu(context,(XFile? selectedImage)async {
-                      controller
-                          .temporaryDocImageName
-                          .value =
-                          selectedImage!.name;
-                      controller
-                          .temporaryDocImagePath
-                          .value =
-                          selectedImage.path;
-                      print(
-                          controller.temporaryDocImagePath.value);
-                      bytes = await selectedImage.readAsBytes();
-                      controller.base64String.value = base64.encode(bytes);
-                    });
-                  },
-                  color: CustomColor.primaryBlue,
-                  margin: EdgeInsets.symmetric(
-                    vertical: ScreenConstant.defaultHeightFifteen,
-                    horizontal: ScreenConstant.defaultWidthTwenty,
-                  ),
-                  leadingIconvisible: true,
-                  title: AppStrings.addImage.tr,
-                  titleTextStyle:
-                  TextStyles.textStyleRegular.apply(color: CustomColor.white),
-                ):UniversalButtonWidget(
-                  ontap: () {
-                    controller
-                        .temporaryDocImageName
-                        .value ="";
-                    controller
-                        .temporaryDocImagePath
-                        .value ="";
-                  },
-                  color: CustomColor.orange,
-                  margin: EdgeInsets.symmetric(
-                    vertical: ScreenConstant.defaultHeightFifteen,
-                    horizontal: ScreenConstant.defaultWidthTwenty,
-                  ),
-                  leadingIconvisible: true,
-                  title: AppStrings.deleteImage.tr,
-                  titleTextStyle:
-                  TextStyles.textStyleRegular.apply(color: CustomColor.white),
-                ),
+              Obx(
+                () => controller.temporaryDocImagePath.value.isEmpty
+                    ? UniversalButtonWidget(
+                        ontap: () {
+                          chooseCameraOrGalleryModalBottomSheetMenu(context,
+                              (XFile? selectedImage) async {
+                            controller.temporaryDocImageName.value =
+                                selectedImage!.name;
+                            controller.temporaryDocImagePath.value =
+                                selectedImage.path;
+                            print(controller.temporaryDocImagePath.value);
+                            bytes = await selectedImage.readAsBytes();
+                            controller.base64String.value =
+                                base64.encode(bytes);
+                          });
+                        },
+                        color: CustomColor.primaryBlue,
+                        margin: EdgeInsets.symmetric(
+                          vertical: ScreenConstant.defaultHeightFifteen,
+                          horizontal: ScreenConstant.defaultWidthTwenty,
+                        ),
+                        leadingIconvisible: true,
+                        title: AppStrings.addImage.tr,
+                        titleTextStyle: TextStyles.textStyleRegular
+                            .apply(color: CustomColor.white),
+                      )
+                    : UniversalButtonWidget(
+                        ontap: () {
+                          controller.temporaryDocImageName.value = "";
+                          controller.temporaryDocImagePath.value = "";
+                        },
+                        color: CustomColor.orange,
+                        margin: EdgeInsets.symmetric(
+                          vertical: ScreenConstant.defaultHeightFifteen,
+                          horizontal: ScreenConstant.defaultWidthTwenty,
+                        ),
+                        leadingIconvisible: true,
+                        title: AppStrings.deleteImage.tr,
+                        titleTextStyle: TextStyles.textStyleRegular
+                            .apply(color: CustomColor.white),
+                      ),
               ),
               Container(
                 height: ScreenConstant.defaultHeightTen,
@@ -186,17 +180,17 @@ class HomeScreen extends GetView<HomeController> {
                 ontap: () {
                   if (controller.titleController.text.isNotEmpty) {
                     if (controller.descController.text.isNotEmpty) {
-                      if(controller.base64String.value.isNotEmpty){
-                        controller.addData(controller.titleController.text,
-                            controller.descController.text, controller
-                                .temporaryDocImagePath
-                                .value);
+                      if (controller.base64String.value.isNotEmpty) {
+                        controller.addData(
+                            controller.titleController.text,
+                            controller.descController.text,
+                            controller.temporaryDocImagePath.value);
                         controller.descController.text = "";
                         controller.titleController.text = "";
                         controller.base64String.value = "";
                         controller.temporaryDocImagePath.value = "";
                         controller.temporaryDocImageName.value = "";
-                      }else{
+                      } else {
                         showFailureSnackBar(AppStrings.somethingWentWrong.tr,
                             AppStrings.needAImage.tr);
                       }
@@ -229,75 +223,22 @@ class HomeScreen extends GetView<HomeController> {
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: controller.allData.length,
-                        itemBuilder: (context, index) => Card(
-                              elevation: 2,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: ScreenConstant.defaultWidthTen,
-                                  vertical:
-                                      ScreenConstant.defaultHeightFifteen),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: ScreenConstant.defaultWidthTen,
-                                    vertical:
-                                        ScreenConstant.defaultHeightFifteen),
-                                child: Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: SizedBox(
-                                        height: ScreenConstant.defaultHeightNinety,
-                                        child: Image.file(
-                                        fit: BoxFit.fitWidth,
-                                        File(controller.allData[index]["image"]),
-                                      ),),
-                                    ),
-                                    Container(width: ScreenConstant.defaultWidthTen,),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${AppStrings.title} ${controller.allData[index]["title"]}",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        Text(
-                                          "${AppStrings.description} ${controller.allData[index]["desc"]}",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                        onTap: () {
-                                          Get.toNamed(Routes.UPDATEDETAILS,arguments: [controller.allData[index]
-                                          ["id"],
-                                            controller.allData[index]
-                                            ["title"],
-                                            controller.allData[index]
-                                            ["desc"],
-                                              controller.allData[index]
-                                              ["image"]]
-                                          );
-                                        },
-                                        child: const Icon(
-                                          Icons.edit,
-                                          color: CustomColor.primaryBlue,
-                                        )),
-                                    Container(
-                                      width: ScreenConstant.defaultWidthTen,
-                                    ),
-                                    InkWell(
-                                        onTap: () {
-                                          controller.deleteData(controller.allData[index]
-                                          ["id"]);
-                                        },
-                                        child: const Icon(
-                                          Icons.delete,
-                                          color: CustomColor.orange,
-                                        ))
-                                  ],
-                                ),
-                              ),
+                        itemBuilder: (context, index) => HomeCardWidget(
+                              title: controller.allData[index]["title"],
+                              description: controller.allData[index]["desc"],
+                              image: controller.allData[index]["image"],
+                              onTapDelete: () {
+                                controller.deleteData(
+                                    controller.allData[index]["id"]);
+                              },
+                              onTapEdit: () {
+                                Get.toNamed(Routes.UPDATEDETAILS, arguments: [
+                                  controller.allData[index]["id"],
+                                  controller.allData[index]["title"],
+                                  controller.allData[index]["desc"],
+                                  controller.allData[index]["image"]
+                                ]);
+                              },
                             )),
               )
             ],
