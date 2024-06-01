@@ -507,6 +507,7 @@ Future chooseCameraOrGalleryModalBottomSheetMenu(BuildContext context, Function 
                       Get.back();
                       debugPrint("Gallery button pressed");
                       choosedImage = await _getFromGallery();
+                      print("Gallery:${choosedImage?.readAsBytes()}");
                       onImageSelected(choosedImage);
                     },
                     child: Text("Add Photo from library",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15),),

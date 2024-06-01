@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../../common/widgets/toggle_button.dart';
 import '../../../../common/widgets/universal_button_widget.dart';
@@ -112,11 +115,9 @@ class HomeScreen extends GetView<HomeController> {
                           .defaultHeightOneForty,
                       width: ScreenConstant
                           .defaultWidthOneSeventy,
-                      child: Image.file(
+                      child: Image.memory(
                         fit: BoxFit.fitWidth,
-                        File(controller
-                            .temporaryDocImagePath
-                            .value),
+                          base64Decode(controller.base64String.value)
                       ),
                     ),
                   ),
@@ -132,7 +133,7 @@ class HomeScreen extends GetView<HomeController> {
                     .temporaryDocImagePath
                     .value.isEmpty?UniversalButtonWidget(
                   ontap: () {
-                    chooseCameraOrGalleryModalBottomSheetMenu(context,(XFile? selectedImage) {
+                    chooseCameraOrGalleryModalBottomSheetMenu(context,(XFile? selectedImage)async {
                       controller
                           .temporaryDocImageName
                           .value =
@@ -143,6 +144,8 @@ class HomeScreen extends GetView<HomeController> {
                           selectedImage.path;
                       print(
                           controller.temporaryDocImagePath.value);
+                      controller.bytes = await selectedImage.readAsBytes();
+                      controller.base64String.value = base64.encode(controller.bytes);
                     });
                   },
                   color: CustomColor.primaryBlue,

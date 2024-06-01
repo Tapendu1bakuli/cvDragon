@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:cv_dragon/database/db_helper.dart';
 import 'package:cv_dragon/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class HomeController extends GetxController{
 
@@ -16,6 +19,9 @@ class HomeController extends GetxController{
 
   RxString temporaryDocImageName = "".obs;
   RxString temporaryDocImagePath = "".obs;
+
+  late final Uint8List bytes;
+  RxString base64String = "".obs;
 
 @override
   void onInit() {
