@@ -37,34 +37,41 @@ class HomeScreen extends GetView<HomeController> {
               vertical: ScreenConstant.defaultHeightFifteen),
           child: ListView(
             children: [
-              Row(
-                children: [
-                  Text(
-                    AppStrings.insertVlog.tr,
-                    style: Get.textTheme.titleLarge
-                        ?.merge(TextStyle(color: context.theme.primaryColor)),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: ScreenConstant.defaultWidthTwenty,
+                      vertical: ScreenConstant.defaultHeightTen),
+                  child: Row(
+                    children: [
+                      Text(
+                        AppStrings.toggleBetweenTheme.tr,
+                        style: Get.textTheme.titleLarge?.merge(
+                            TextStyle(color: context.theme.primaryColor)),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        HiveStore().getBool(Keys.ISDARK)
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        color: CustomColor.primaryBlue,
+                      ),
+                      CupertinoSwitch(
+                        value: HiveStore().getBool(Keys.ISDARK),
+                        onChanged: (value) {
+                          controller.toggleValue.value = value;
+                          HiveStore().setBool(Keys.ISDARK, value);
+                          print(HiveStore().getBool(Keys.ISDARK));
+                          if (controller.toggleValue.value) {
+                            Get.changeThemeMode(ThemeMode.dark);
+                          } else {
+                            Get.changeThemeMode(ThemeMode.light);
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  Icon(
-                    HiveStore().getBool(Keys.ISDARK)
-                        ? Icons.dark_mode
-                        : Icons.light_mode,
-                    color: CustomColor.primaryBlue,
-                  ),
-                  CupertinoSwitch(
-                    value: HiveStore().getBool(Keys.ISDARK),
-                    onChanged: (value) {
-                      controller.toggleValue.value = value;
-                      HiveStore().setBool(Keys.ISDARK, value);
-                      print(HiveStore().getBool(Keys.ISDARK));
-                      if (controller.toggleValue.value) {
-                        Get.changeThemeMode(ThemeMode.dark);
-                      } else {
-                        Get.changeThemeMode(ThemeMode.light);
-                      }
-                    },
-                  ),
-                ],
+                ),
               ),
               Container(
                 height: ScreenConstant.defaultHeightTen,
