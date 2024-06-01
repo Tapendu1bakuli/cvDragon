@@ -35,24 +35,24 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     animationController.dispose();
     super.dispose();
   }
-
+  //refresh data's after add or update or delete.
   void refreshData() async {
     final data = await SQLHelper.getAllData();
     allData.value = data;
     isLoading.value = false;
   }
-
+  //add data to db
  Future<void> addData(String title, String desc,String image) async {
   await SQLHelper.createData(title, desc,image);
   refreshData();
  }
-
+  //update data to db.
   Future<void> updateData(int id,String title,String description,String image) async {
     await SQLHelper.updateData(id,title, description,image);
     refreshData();
     Get.back();
   }
-
+  //delete data from db.
   Future<void> deleteData(int id) async {
     await SQLHelper.deleteData(id);
     showSuccessSnackbar("Item deleted", "Deletion successful.");
