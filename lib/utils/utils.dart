@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,48 +16,6 @@ launchUrls(Uri url) async {
     throw Exception('Could not launch $url');
   }
 }
-/*
-Future<String> openDatePicker(
-    BuildContext context, String startDate, String enddate) async {
-  String formattedDate = "";
-  DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate:
-      // (startDate.isEmpty) ?
-           DateTime.now(),
-          // : DateFormat("yyyy-MM-dd").parse(startDate),
-      firstDate: */
-/*(enddate.isEmpty)
-          ?*/ /*
- DateTime(1900),
-          // : DateFormat("yyyy-MM-dd").parse(enddate),
-      //DateTime.now() - not to allow to choose before today.
-      lastDate: DateTime(DateTime.now().year + 100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: AppColors.colorDeepPrimary, // <-- SEE HERE
-              onPrimary: AppColors.colorAssent, // <-- SEE HERE
-              onSurface: AppColors.colorDeepPrimary, // <-- SEE HERE
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: AppColors.colorPrimary, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      });
-
-  if (pickedDate != null) {
-    print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-    formattedDate = DateFormat('MM/dd/yy').format(pickedDate);
-  }
-  return formattedDate;
-}
-*/
 
 void showFailureSnackBar(String? title, String msg) {
   clearSnackBars();
@@ -73,7 +30,7 @@ void showFailureSnackBar(String? title, String msg) {
           style: TextStyles.hintTextStyle.copyWith(color: CustomColor.fillOffWhiteColor,fontSize: 13,fontWeight: FontWeight.w500),
         ),
       ),
-      icon: Icon(Icons.error_outline_rounded),
+      icon: const Icon(Icons.error_outline_rounded),
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: CustomColor.primaryBlue,
       colorText: CustomColor.white,
@@ -93,7 +50,7 @@ void showSuccessSnackBar(String? title, String msg) {
         style: TextStyles.hintTextStyle.copyWith(color: CustomColor.fillOffWhiteColor,fontSize: 13,fontWeight: FontWeight.w500),
       ),
     ),
-    icon: Icon(Icons.done),
+    icon: const Icon(Icons.done),
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: CustomColor.primaryBlue,
     colorText: CustomColor.white,
@@ -129,27 +86,6 @@ bool isGraterDate(String startDate, String endDate) {
   return isGrater;
 }
 
-/*String convertDate(String inputdate, String format) {
-  String date ="";
-  try {
-    print(inputdate);
-    DateTime dt1 = DateTime.parse(inputdate);
-    String formattedDate = DateFormat(format).format(dt1);
-    print(formattedDate);
-    date =  formattedDate;
-  } catch (e) {}
-  return date;
-}
-
-Future downloadFile(String path,String name) async {
-  final taskId = await FlutterDownloader.enqueue(
-    url: path,
-    savedDir: 'the path of directory where you want to save downloaded files',
-    showNotification: true,
-    // show download progress in status bar (for Android)
-    openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-  );
-}*/
 Future modalBottomSheetMenu(
     BuildContext context,
     Widget? titleWidget,
@@ -170,7 +106,7 @@ Future modalBottomSheetMenu(
       builder: (builder) {
         return Container(
           height: ScreenConstant.screenHeightThird,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(25.0),
             ),
@@ -183,7 +119,7 @@ Future modalBottomSheetMenu(
                   Container(
                     height: ScreenConstant.defaultHeightTwentyThree,
                   ),
-                  titleWidget ?? Offstage(),
+                  titleWidget ?? const Offstage(),
                   Container(
                     height: ScreenConstant.defaultHeightTen,
                   ),
@@ -202,7 +138,7 @@ Future modalBottomSheetMenu(
                               IconButton(
                                   splashRadius: 1,
                                   onPressed: increase,
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.remove,
                                     size: 30,
                                   )),
@@ -215,7 +151,7 @@ Future modalBottomSheetMenu(
                           ),
                           DropdownButton(
                             iconSize: 0.0,
-                            underline: SizedBox.shrink(),
+                            underline: const SizedBox.shrink(),
                             alignment: Alignment.center,
                             style: TextStyles.textStyleRegular.apply(
                                 color: Colors.black, fontSizeFactor: 1.7),
@@ -270,7 +206,7 @@ Future modalBottomSheetMenu(
                               IconButton(
                                   splashRadius: 1,
                                   onPressed: decrease,
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.add,
                                     size: 30,
                                   )),
@@ -282,11 +218,11 @@ Future modalBottomSheetMenu(
                   ),
                   Row(
                     children: [
-                      valueWidget ?? Offstage(),
+                      valueWidget ?? const Offstage(),
                       Container(
                         width: ScreenConstant.defaultWidthTen,
                       ),
-                      Text("= 1 USD")
+                      const Text("= 1 USD")
                     ],
                   ),
                   UniversalButtonWidget(
@@ -326,21 +262,12 @@ void showLogoutDialog(Function()? onYesTapped) {
       cancelTextColor: CustomColor.chatPaymentBackground);
 }
 
-// Future logoutUser()async {
-//   SharedPref sharedPref = Get.find();
-//   await sharedPref.setLoggedin(false);
-//   await sharedPref.setLogindata("");
-//   // sharedPref.clearData();
-//    //Get.offAll(LoginPage());
-//
-// }
-//
 void showFailureSnackbar( String? title,String msg){
   Get.snackbar(title??AppStrings.oops.tr,msg,snackPosition: SnackPosition.TOP,
       backgroundColor: CustomColor.homeGrey,
       colorText: Colors.red,
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.all(20)
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20)
   );
 }
 //Store data's in local
@@ -363,8 +290,8 @@ void showSuccessSnackbar( String? title,String msg) {
   Get.snackbar(title ?? AppStrings.oops.tr, msg, snackPosition: SnackPosition.TOP,
       backgroundColor: CustomColor.primaryBlue,
       colorText: CustomColor.white,
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.all(20)
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20)
   );
 }
 Widget redHeartCurrency(
@@ -386,8 +313,8 @@ Widget redHeartCurrency(
         child: Container(
           height: ScreenConstant.defaultHeightTwentyThree,
           width: ScreenConstant.defaultWidthTwentyThree,
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(color: CustomColor.secondaryOffWhiteColor),
+          padding: const EdgeInsets.all(5),
+          decoration: const BoxDecoration(color: CustomColor.secondaryOffWhiteColor),
           child: Center(
             child: Image.asset(imageName!,color: CustomColor.secondaryBlue,),
           ),
@@ -405,8 +332,8 @@ void showNotificationSnackbar(
       snackPosition: SnackPosition.TOP,
       backgroundColor: CustomColor.chatPaymentBackground,
       colorText: CustomColor.chatPaymentBackground,
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       onTap: (value) => onNotificationTap);
 }
 
@@ -449,7 +376,7 @@ Future chooseCameraOrGalleryModalBottomSheetMenu(BuildContext context, Function 
       builder: (builder) {
         return Container(
           height: 187.0,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(25.0),
             ),
@@ -473,30 +400,30 @@ Future chooseCameraOrGalleryModalBottomSheetMenu(BuildContext context, Function 
                   Gap(30),
                   ElevatedButton(
                     style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all<Size>(
-                          Size(335.0, 48.0), // Set the desired width and height
+                        fixedSize: WidgetStateProperty.all<Size>(
+                          const Size(335.0, 48.0), // Set the desired width and height
                         ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0), // Adjust the value as needed
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(CustomColor.primaryBlue)),
+                        backgroundColor: WidgetStateProperty.all<Color>(CustomColor.primaryBlue)),
                     onPressed: () async {
                       Get.back();
                       debugPrint("Camera button pressed");
                       choosedImage = await  openCamera(context,isFront: isFront);
                       onImageSelected(choosedImage);
                     },
-                    child: Text("Take Photo",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15,color: Colors.white),),
+                    child: const Text("Take Photo",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15,color: Colors.white),),
                   ),
                   Gap(14),
                   ElevatedButton(
                     style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all<Size>(
-                          Size(335.0, 48.0), // Set the desired width and height
+                        fixedSize: WidgetStateProperty.all<Size>(
+                          const Size(335.0, 48.0), // Set the desired width and height
                         ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0), // Adjust the value as needed
                           ),
@@ -510,7 +437,7 @@ Future chooseCameraOrGalleryModalBottomSheetMenu(BuildContext context, Function 
                       print("Gallery:${choosedImage?.readAsBytes()}");
                       onImageSelected(choosedImage);
                     },
-                    child: Text("Add Photo from library",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15),),
+                    child: const Text("Add Photo from library",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15),),
                   ),
                 ],
               ),

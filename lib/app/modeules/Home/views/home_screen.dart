@@ -108,6 +108,16 @@ class HomeScreen extends GetView<HomeController> {
               Container(
                 height: ScreenConstant.defaultHeightTen,
               ),
+              Obx(()=> controller.temporaryDocImagePath.value.isEmpty
+                    ? const Offstage()
+                    : Text(AppStrings.image.tr),
+              ),
+              Obx(()=> controller.temporaryDocImagePath.value.isEmpty
+                  ? const Offstage()
+                  : Container(
+                height: ScreenConstant.defaultHeightTen,
+              ),
+    ),
               Obx(
                 () => controller.temporaryDocImagePath.value.isEmpty
                     ? const Offstage()

@@ -16,6 +16,7 @@ class AppStrings{
   static const String vlogsListIsEmpty = "Vlogs list is empty.";
   static const String title = "Title: ";
   static const String description = "Description: ";
+  static const String image = "Image: ";
   static const String updateDatabase = "Update database";
   static const String needADescription = "Need a description to submit.";
   static const String needAImage = "Need a image to submit.";
