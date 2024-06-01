@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
 import 'package:cv_dragon/device_manager/screen_constants.dart';
 import 'package:cv_dragon/utils/Store/HiveStore.dart';
 import 'package:cv_dragon/utils/text_utils/app_strings.dart';
 import 'package:cv_dragon/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -93,6 +97,82 @@ class HomeScreen extends GetView<HomeController> {
                 obscureText: true,
                 controller: controller.descController,
                 hintText: AppStrings.enterDescription.tr,
+              ),
+              Container(
+                height: ScreenConstant.defaultHeightTen,
+              ),
+              Obx(()=> controller
+                    .temporaryDocImagePath
+                    .value.isEmpty?const Offstage():Center(
+                  child: ClipRRect(
+                    borderRadius:
+                    BorderRadius.circular(20),
+                    child: SizedBox(
+                      height: ScreenConstant
+                          .defaultHeightOneForty,
+                      width: ScreenConstant
+                          .defaultWidthOneSeventy,
+                      child: Image.file(
+                        fit: BoxFit.fitWidth,
+                        File(controller
+                            .temporaryDocImagePath
+                            .value),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Obx(()=> controller
+                    .temporaryDocImagePath
+                    .value.isEmpty?const Offstage():Container(
+                  height: ScreenConstant.defaultHeightTen,
+                ),
+              ),
+              Obx(()=> controller
+                    .temporaryDocImagePath
+                    .value.isEmpty?UniversalButtonWidget(
+                  ontap: () {
+                    chooseCameraOrGalleryModalBottomSheetMenu(context,(XFile? selectedImage) {
+                      controller
+                          .temporaryDocImageName
+                          .value =
+                          selectedImage!.name;
+                      controller
+                          .temporaryDocImagePath
+                          .value =
+                          selectedImage.path;
+                      print(
+                          controller.temporaryDocImagePath.value);
+                    });
+                  },
+                  color: CustomColor.primaryBlue,
+                  margin: EdgeInsets.symmetric(
+                    vertical: ScreenConstant.defaultHeightFifteen,
+                    horizontal: ScreenConstant.defaultWidthTwenty,
+                  ),
+                  leadingIconvisible: true,
+                  title: AppStrings.addImage.tr,
+                  titleTextStyle:
+                  TextStyles.textStyleRegular.apply(color: CustomColor.white),
+                ):UniversalButtonWidget(
+                  ontap: () {
+                    controller
+                        .temporaryDocImageName
+                        .value ="";
+                    controller
+                        .temporaryDocImagePath
+                        .value ="";
+                  },
+                  color: CustomColor.orange,
+                  margin: EdgeInsets.symmetric(
+                    vertical: ScreenConstant.defaultHeightFifteen,
+                    horizontal: ScreenConstant.defaultWidthTwenty,
+                  ),
+                  leadingIconvisible: true,
+                  title: AppStrings.deleteImage.tr,
+                  titleTextStyle:
+                  TextStyles.textStyleRegular.apply(color: CustomColor.white),
+                ),
               ),
               Container(
                 height: ScreenConstant.defaultHeightTen,

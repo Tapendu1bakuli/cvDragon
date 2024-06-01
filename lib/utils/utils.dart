@@ -1,5 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../common/widgets/universal_button_widget.dart';
 import '../device_manager/screen_constants.dart';
@@ -430,289 +433,242 @@ mobileValidator(String? mobile) {
   return null;
 }
 
-// Future modalBottomSheetMenu(BuildContext context, Function onImageSelected,{bool? isFront = false}) async {
-//   XFile? choosedImage;
-//   await showModalBottomSheet(
-//       backgroundColor: Get.theme.colorScheme.onPrimary,
-//       shape: const RoundedRectangleBorder(
-//         borderRadius: BorderRadius.vertical(
-//           top: Radius.circular(25.0),
-//         ),
-//       ),
-//       context: context,
-//       builder: (builder) {
-//         return Container(
-//           height: 187.0.ss,
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.vertical(
-//               top: Radius.circular(25.0),
-//             ),
-//           ),
-//           child: Center(
-//             child: Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 28.0),
-//               child: Column(
-//                 children: [
-//                   Gap(10),
-//                   Container(
-//                     width: 54,
-//                     height: 3,
-//                     decoration: ShapeDecoration(
-//                       color: AppColors.colorLightGrey,
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(100),
-//                       ),
-//                     ),
-//                   ),
-//                   Gap(30),
-//                   ElevatedButton(
-//                     style: ButtonStyle(
-//                         fixedSize: MaterialStateProperty.all<Size>(
-//                           Size(335.0.ss, 48.0.ss), // Set the desired width and height
-//                         ),
-//                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-//                           RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(12.0), // Adjust the value as needed
-//                           ),
-//                         ),
-//                         backgroundColor: MaterialStateProperty.all<Color>(AppColors.iconColor)),
-//                     onPressed: () async {
-//                       Get.back();
-//                       debugPrint("Camera button pressed");
-//                       choosedImage = await  openCamera(context,isFront: isFront);
-//                       onImageSelected(choosedImage);
-//                     },
-//                     child: Text(AppStrings.takePhoto.tr,style: CustomTextStyle(fontWeight: FontWeight.w700,fontSize: 15,color: AppColors.colorWhite),),
-//                   ),
-//                   Gap(14),
-//                   ElevatedButton(
-//                     style: ButtonStyle(
-//                         fixedSize: MaterialStateProperty.all<Size>(
-//                           Size(335.0.ss, 48.0.ss), // Set the desired width and height
-//                         ),
-//                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-//                           RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(12.0), // Adjust the value as needed
-//                           ),
-//                         ),
-//                         backgroundColor: MaterialStateProperty.all<Color>(
-//                             AppColors.colorGrey)),
-//                     onPressed: () async {
-//                       Get.back();
-//                       debugPrint("Gallery button pressed");
-//                        choosedImage = await _getFromGallery();
-//                       onImageSelected(choosedImage);
-//                     },
-//                     child: Text(AppStrings.addFromPhotoLibrary.tr,style: CustomTextStyle(color: AppColors.titleColor,fontWeight: FontWeight.w700,fontSize: 15),),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       });
-//  // return choosedImage;
-// }
-//
-// Future<XFile?> openGallery(context) async {
-//   // Check if the storage permission is already granted
-//   PermissionStatus status = await Permission.storage.status;
-//   if (status.isGranted) {
-//     // Permission is already granted, open the gallery
-//    return _getFromGallery();
-//   } else if (status.isDenied) {
-//     // Permission is denied, show a dialog to request permission again
-//     showPermissionDialog(context);
-//   } else {
-//     // Permission is not determined, request the storage permission
-//     PermissionStatus requestedStatus = await Permission.storage.request();
-//     if (requestedStatus.isGranted) {
-//       // Permission granted, open the gallery
-//     return _getFromGallery();
-//     } else if (requestedStatus.isPermanentlyDenied) {
-//       // Permission denied permanently, show a dialog to redirect to app settings
-//       showSettingsDialog(context);
-//     } else {
-//       // Permission denied, handle accordingly
-//       print('Gallery permission denied');
-//     }
-//   }
-// }
-//
-// Future<XFile?> openCamera(context,{bool? isFront = false}) async {
-//   // Check if the camera permission is already granted
-//   PermissionStatus status = await Permission.camera.status;
-//   if (status.isGranted) {
-//     // Permission is already granted, open the camera
-//    return _getFromCamera(isFront: isFront);
-//   } else if (status.isDenied) {
-//     // Permission is denied, show a dialog to request permission again
-//     showPermissionDialog(context);
-//   } else {
-//     // Permission is not determined, request the camera permission
-//     PermissionStatus requestedStatus = await Permission.camera.request();
-//     if (requestedStatus.isGranted) {
-//       // Permission granted, open the camera
-//     return _getFromCamera(isFront: isFront);
-//     } else if (requestedStatus.isPermanentlyDenied) {
-//       // Permission denied permanently, show a dialog to redirect to app settings
-//       showSettingsDialog(context);
-//     } else {
-//       // Permission denied, handle accordingly
-//       print('Camera permission denied');
-//     }
-//   }
-// }
-//
-// void showSettingsDialog(context) {
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         title: const Text('Permission Required'),
-//         content: const Text(
-//             'Camera permission is required. Please enable it in the app settings.'),
-//         actions: [
-//           TextButton(
-//             child: const Text('CANCEL'),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//           ),
-//           TextButton(
-//             child: const Text('SETTINGS'),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//               openAppSettings(); // Open app settings page
-//             },
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
-//
-// void showPermissionDialog(context) {
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         title: const Text('Permission Required'),
-//         content: const Text('This app requires access to the camera.'),
-//         actions: [
-//           TextButton(
-//             child: const Text('CANCEL'),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//           ),
-//           TextButton(
-//             child: const Text('SETTINGS'),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//               openAppSettings(); // Open app settings page
-//             },
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
-//
-// Future<XFile?> _getFromGallery() async {
-//   XFile? selectedImage;
-//   selectedImage = (await ImagePicker().pickImage(
-//     source: ImageSource.gallery,
-//     maxWidth: 1800,
-//     maxHeight: 1800,
-//   ));
-//   if (selectedImage != null) {
-//     CroppedFile? croppedImage = await ImageCropper().cropImage(
-//       sourcePath: selectedImage.path,
-//       aspectRatioPresets: [
-//         CropAspectRatioPreset.square,
-//         CropAspectRatioPreset.ratio3x2,
-//         CropAspectRatioPreset.original,
-//         CropAspectRatioPreset.ratio4x3,
-//         CropAspectRatioPreset.ratio16x9,
-//         CropAspectRatioPreset.ratio7x5,
-//       ],
-//       compressQuality: 100, // Set the compression quality
-//     );
-//
-//     // Convert the File to XFile
-//     if (croppedImage != null) {
-//       return XFile(croppedImage.path);
-//     }
-//   }
-//   return null;
-// }
-//
-// Future<XFile?> _getFromCamera({bool? isFront= false}) async {
-//   print("ISFRONT:$isFront");
-//   XFile? selectedImage;
-//
-//   // Pick image from the camera
-//   selectedImage = await ImagePicker().pickImage(
-//     source: ImageSource.camera,
-//     preferredCameraDevice: (isFront ?? false)?CameraDevice.front:CameraDevice.rear,
-//     maxWidth: 1800,
-//     maxHeight: 1800,
-//   );
-//
-//   // Check if an image was selected
-//   if (selectedImage != null) {
-//     // Crop the selected image
-//     CroppedFile? croppedImage = await ImageCropper().cropImage(
-//       sourcePath: selectedImage.path,
-//       aspectRatioPresets: [
-//         CropAspectRatioPreset.square,
-//         CropAspectRatioPreset.ratio3x2,
-//         CropAspectRatioPreset.original,
-//         CropAspectRatioPreset.ratio4x3,
-//         CropAspectRatioPreset.ratio16x9,
-//         CropAspectRatioPreset.ratio7x5,
-//       ],
-//       compressQuality: 100, // Set the compression quality
-//     );
-//
-//     // Convert the File to XFile
-//     if (croppedImage != null) {
-//       return XFile(croppedImage.path);
-//     }
-//   }
-//
-//   // Return null if no image was selected or cropping was canceled
-//   return null;
-// }
-// // String input = DateFormat('yyyy-MM-dd HH:mm:ss').format(dt1);
-// //     String  formattedDate = DateFormat('EEEE, MMM d, yyyy').format(input);
-//
-//
-// Future<DateTime?> getDateTimeFromCalender(
-//     {required BuildContext context, required bool isFutureDateEnable,DateTime? initialDate,DateTime ? firstDate,DateTime ? lastDate}) async {
-//   DateTime? pickedDate = await showDatePicker(
-//       context: context,
-//       initialDate: initialDate??DateTime.now(),
-//       firstDate:firstDate?? DateTime(1900),
-//       //DateTime.now() - not to allow to choose before today.
-//       lastDate: lastDate!=null?lastDate :  isFutureDateEnable? DateTime.now().add(Duration(days: 100000)): DateTime.now());
-//
-//   if (pickedDate != null) {
-//     debugPrint(pickedDate.toString());
-//     String formattedDate =
-//     DateFormat('yyyy-MM-dd').format(pickedDate);
-//     debugPrint(formattedDate);
-//   } else {}
-//
-//   return pickedDate;
-// }
-//
-// openDialPad(String phoneNumber) async {
-//   Uri url = Uri(scheme: "tel", path: phoneNumber);
-//   if (await canLaunchUrl(url)) {
-//     await launchUrl(url);
-//   } else {
-//     print("Can't open dial pad.");
-//   }
-// }
+Widget Gap(double gap ){
+  return SizedBox(height: gap,);
+}
+Future chooseCameraOrGalleryModalBottomSheetMenu(BuildContext context, Function onImageSelected,{bool? isFront = false}) async {
+  XFile? choosedImage;
+  await showModalBottomSheet(
+      backgroundColor: Get.theme.colorScheme.onPrimary,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      context: context,
+      builder: (builder) {
+        return Container(
+          height: 187.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(25.0),
+            ),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28.0),
+              child: Column(
+                children: [
+                  Gap(10),
+                  Container(
+                    width: 54,
+                    height: 3,
+                    decoration: ShapeDecoration(
+                      color: CustomColor.primaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    ),
+                  ),
+                  Gap(30),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all<Size>(
+                          Size(335.0, 48.0), // Set the desired width and height
+                        ),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0), // Adjust the value as needed
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(CustomColor.primaryBlue)),
+                    onPressed: () async {
+                      Get.back();
+                      debugPrint("Camera button pressed");
+                      choosedImage = await  openCamera(context,isFront: isFront);
+                      onImageSelected(choosedImage);
+                    },
+                    child: Text("Take Photo",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15,color: Colors.white),),
+                  ),
+                  Gap(14),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all<Size>(
+                          Size(335.0, 48.0), // Set the desired width and height
+                        ),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0), // Adjust the value as needed
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            CustomColor.primaryBlue)),
+                    onPressed: () async {
+                      Get.back();
+                      debugPrint("Gallery button pressed");
+                      choosedImage = await _getFromGallery();
+                      onImageSelected(choosedImage);
+                    },
+                    child: Text("Add Photo from library",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15),),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+  // return choosedImage;
+}
+
+Future<XFile?> openGallery(context) async {
+  // Check if the storage permission is already granted
+  PermissionStatus status = await Permission.storage.status;
+  if (status.isGranted) {
+    // Permission is already granted, open the gallery
+    return _getFromGallery();
+  } else if (status.isDenied) {
+    // Permission is denied, show a dialog to request permission again
+    showPermissionDialog(context);
+  } else {
+    // Permission is not determined, request the storage permission
+    PermissionStatus requestedStatus = await Permission.storage.request();
+    if (requestedStatus.isGranted) {
+      // Permission granted, open the gallery
+      return _getFromGallery();
+    } else if (requestedStatus.isPermanentlyDenied) {
+      // Permission denied permanently, show a dialog to redirect to app settings
+      showSettingsDialog(context);
+    } else {
+      // Permission denied, handle accordingly
+      print('Gallery permission denied');
+    }
+  }
+}
+
+Future<XFile?> openCamera(context,{bool? isFront = false}) async {
+  // Check if the camera permission is already granted
+  PermissionStatus status = await Permission.camera.status;
+  if (status.isGranted) {
+    // Permission is already granted, open the camera
+    return _getFromCamera(isFront: isFront);
+  } else if (status.isDenied) {
+    // Permission is denied, show a dialog to request permission again
+    showPermissionDialog(context);
+  } else {
+    // Permission is not determined, request the camera permission
+    PermissionStatus requestedStatus = await Permission.camera.request();
+    if (requestedStatus.isGranted) {
+      // Permission granted, open the camera
+      return _getFromCamera(isFront: isFront);
+    } else if (requestedStatus.isPermanentlyDenied) {
+      // Permission denied permanently, show a dialog to redirect to app settings
+      showSettingsDialog(context);
+    } else {
+      // Permission denied, handle accordingly
+      print('Camera permission denied');
+    }
+  }
+}
+
+void showSettingsDialog(context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Permission Required'),
+        content: const Text(
+            'Camera permission is required. Please enable it in the app settings.'),
+        actions: [
+          TextButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: const Text('SETTINGS'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              openAppSettings(); // Open app settings page
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showPermissionDialog(context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Permission Required'),
+        content: const Text('This app requires access to the camera.'),
+        actions: [
+          TextButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: const Text('SETTINGS'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              openAppSettings(); // Open app settings page
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<XFile?> _getFromGallery() async {
+  XFile? selectedImage;
+  selectedImage = (await ImagePicker().pickImage(
+    source: ImageSource.gallery,
+    maxWidth: 1800,
+    maxHeight: 1800,
+  ));
+  return XFile(selectedImage!.path);
+}
+
+Future<XFile?> _getFromCamera({bool? isFront= false}) async {
+  print("ISFRONT:$isFront");
+  XFile? selectedImage;
+
+  // Pick image from the camera
+  selectedImage = await ImagePicker().pickImage(
+    source: ImageSource.camera,
+    preferredCameraDevice: (isFront ?? false)?CameraDevice.front:CameraDevice.rear,
+    maxWidth: 1800,
+    maxHeight: 1800,
+  );
+
+  // Check if an image was selected
+  // if (selectedImage != null) {
+  //   // Crop the selected image
+  //   CroppedFile? croppedImage = await ImageCropper().cropImage(
+  //     sourcePath: selectedImage.path,
+  //     aspectRatioPresets: [
+  //       CropAspectRatioPreset.square,
+  //       CropAspectRatioPreset.ratio3x2,
+  //       CropAspectRatioPreset.original,
+  //       CropAspectRatioPreset.ratio4x3,
+  //       CropAspectRatioPreset.ratio16x9,
+  //       CropAspectRatioPreset.ratio7x5,
+  //     ],
+  //     compressQuality: 100, // Set the compression quality
+  //   );
+  //
+  //   // Convert the File to XFile
+  //   if (croppedImage != null) {
+  //     return XFile(croppedImage.path);
+  //   }
+  // }
+
+  // Return null if no image was selected or cropping was canceled
+  return XFile(selectedImage!.path);
+}

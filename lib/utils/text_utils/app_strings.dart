@@ -8,6 +8,8 @@ class AppStrings{
   static const String dark = "Dark";
   static const String insertVlog = "Insert vlog:";
   static const String addVlog = "Add vlog";
+  static const String addImage = "Add image";
+  static const String deleteImage = "Delete image";
   static const String updateVlog = "Update vlog";
   static const String enterTitle = "Enter Title";
   static const String enterDescription = "Enter Description";

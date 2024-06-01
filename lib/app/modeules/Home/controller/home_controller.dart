@@ -2,7 +2,6 @@ import 'package:cv_dragon/database/db_helper.dart';
 import 'package:cv_dragon/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 class HomeController extends GetxController{
 
@@ -14,6 +13,9 @@ class HomeController extends GetxController{
   final TextEditingController descController = TextEditingController();
   final TextEditingController titleEditController = TextEditingController();
   final TextEditingController descEditController = TextEditingController();
+
+  RxString temporaryDocImageName = "".obs;
+  RxString temporaryDocImagePath = "".obs;
 
 @override
   void onInit() {
