@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../device_manager/screen_constants.dart';
 import '../../../../utils/colors/app_colors.dart';
 import '../../../../utils/text_utils/app_strings.dart';
@@ -30,28 +28,34 @@ class HomeCardWidget extends StatelessWidget {
             ScreenConstant.defaultHeightFifteen),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: SizedBox(
-                height: ScreenConstant.defaultHeightNinety,
-                child: Image.file(
-                  fit: BoxFit.fitWidth,
-                  File(image??""),
-                ),),
+            Expanded(
+              flex: 3,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: SizedBox(
+                  height: ScreenConstant.defaultHeightNinety,
+                  child: Image.file(
+                    fit: BoxFit.fitWidth,
+                    File(image??""),
+                  ),),
+              ),
             ),
             Container(width: ScreenConstant.defaultWidthTen,),
-            Column(
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${AppStrings.title} ${title??""}",
-                  style: context.textTheme.headlineSmall),
-                Text(
-                  "${AppStrings.description} ${description??""}",
-                  style: context.textTheme.headlineSmall,
-                ),
-              ],
+            Expanded(
+              flex: 6,
+              child: Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${AppStrings.title} ${title??""}",
+                    style: context.textTheme.headlineSmall),
+                  Text(
+                    "${AppStrings.description} ${description??""}",
+                    style: context.textTheme.headlineSmall,
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             InkWell(

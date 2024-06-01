@@ -16,7 +16,8 @@ class SettingsService extends GetxService {
         primaryColor: CustomColor.primaryBlue,
         floatingActionButtonTheme: const FloatingActionButtonThemeData(elevation: 0, foregroundColor: Colors.white),
         brightness: Brightness.light,
-        dividerColor: CustomColor.bluishWhite,
+        canvasColor: CustomColor.white,
+        dividerColor: CustomColor.primaryBlue,
         focusColor:  CustomColor.colorBgVoteCast,
         hintColor: CustomColor.colorBgVoteCast,
         appBarTheme: const AppBarTheme(backgroundColor: CustomColor.primaryBlue),
@@ -36,6 +37,8 @@ class SettingsService extends GetxService {
             displaySmall: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700, color: CustomColor.primaryBlue, height: 1.3),
             displayMedium: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700, color: CustomColor.primaryBlue, height: 1.4),
             displayLarge: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w300, color: CustomColor.primaryBlue, height: 1.4),
+            bodySmall: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700, color: CustomColor.primaryBlack, height: 1.4),
+
           ),
         ));
   }
@@ -43,11 +46,12 @@ class SettingsService extends GetxService {
   ThemeData getDarkTheme() {
     // TODO change font dynamically
     return ThemeData(
+      canvasColor: CustomColor.primaryBlack,
         primaryColor: CustomColor.white,
         floatingActionButtonTheme: const FloatingActionButtonThemeData(elevation: 0),
         scaffoldBackgroundColor: const Color(0xFF2C2C2C),
         brightness: Brightness.dark,
-        dividerColor: CustomColor.white,
+        dividerColor: CustomColor.primaryBlack,
         focusColor: CustomColor.white,
         hintColor: CustomColor.white,
         textButtonTheme: TextButtonThemeData(
@@ -66,6 +70,8 @@ class SettingsService extends GetxService {
               displaySmall: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700, color: CustomColor.white, height: 1.3),
               displayMedium: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700, color: CustomColor.white, height: 1.4),
               displayLarge: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w300, color: CustomColor.white, height: 1.4),
+              bodySmall: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700, color: CustomColor.white, height: 1.4),
+              bodyMedium: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: CustomColor.white, height: 1.4),
             )),
  );
   }

@@ -230,14 +230,14 @@ class _DefaultEditTextState extends State<DefaultEditText> {
           autofocus: false,
           maxLines: 4,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          style: TextStyles.hintTextStyle.copyWith(color: CustomColor.secondaryBlack,fontSize: 16),
+          style: Get.textTheme.bodySmall,
           decoration: InputDecoration(
-            fillColor: CustomColor.fillOffWhiteColor,
+            fillColor: Get.theme.canvasColor,
             filled: true,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             labelText: widget.labelText,
             hintText: widget.hintText ?? '',
-            hintStyle: TextStyles.hintTextStyle.copyWith(color: CustomColor.secondaryBlack,fontSize: 16),
+            hintStyle: Get.textTheme.bodyMedium,
             prefixIcon: widget.prefixIcon,
             prefixIconConstraints: widget.iconData != null
                 ? BoxConstraints.expand(
@@ -459,14 +459,14 @@ class _DefaultEditTextState extends State<DefaultEditText> {
             autofocus: false,
             maxLines: 1,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            style: TextStyles.hintTextStyle.copyWith(color: CustomColor.secondaryBlack,fontSize: 16),
+            style: Get.textTheme.bodySmall,
             decoration: InputDecoration(
-              fillColor: CustomColor.fillOffWhiteColor,
+              fillColor: Get.theme.canvasColor,
               filled: true,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               labelText: widget.labelText,
               hintText: widget.hintText ?? '',
-              hintStyle: TextStyles.hintTextStyle.copyWith(color: CustomColor.secondaryBlack,fontSize: 16),
+              hintStyle: Get.textTheme.bodyMedium,
               prefixIcon: widget.prefixIcon,
               prefixIconConstraints: widget.iconData != null
                   ? BoxConstraints.expand(
@@ -482,18 +482,18 @@ class _DefaultEditTextState extends State<DefaultEditText> {
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   borderSide: BorderSide(
-                    color: CustomColor.homeGrey.withOpacity(0.6),
+                    color: CustomColor.primaryBlue.withOpacity(0.6),
                     width: 2,
                   )),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: CustomColor.fillOffWhiteColor.withOpacity(0.4), width: 2),
+                    color: CustomColor.primaryBlue.withOpacity(0.4), width: 2),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: CustomColor.fillOffWhiteColor, width: 2),
+                    color: CustomColor.primaryBlue, width: 2),
               ),
             ),
           );

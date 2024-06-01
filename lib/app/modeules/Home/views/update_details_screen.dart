@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../common/widgets/universal_button_widget.dart';
 import '../../../../device_manager/screen_constants.dart';
 import '../../../../utils/TextStyles.dart';
@@ -21,6 +19,14 @@ class UpdateDetailsScreen extends GetView<HomeController> {
     var data = Get.arguments;
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,color: Get.theme.focusColor,),
+          onPressed: (){
+            Get.back();
+          },
+        ),
         title: Text(
           AppStrings.updateDetails.tr,
           style: TextStyles.carousalSubTitleWidgetBlueText,
@@ -137,7 +143,7 @@ class UpdateDetailsScreen extends GetView<HomeController> {
                 controller.temporaryDocImageName.value = "";
                 Get.back();
               },
-              color: CustomColor.primaryBlue,
+              color: Get.theme.dividerColor,
               margin: EdgeInsets.symmetric(
                 vertical: ScreenConstant.defaultHeightFifteen,
                 horizontal: ScreenConstant.defaultWidthTwenty,

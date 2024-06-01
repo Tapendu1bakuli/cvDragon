@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:io' as io;
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:camera/camera.dart';
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
 import 'package:cv_dragon/app/modeules/Home/widgets/home_card_widget.dart';
@@ -11,12 +9,8 @@ import 'package:cv_dragon/utils/Store/HiveStore.dart';
 import 'package:cv_dragon/utils/text_utils/app_strings.dart';
 import 'package:cv_dragon/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-import '../../../../common/widgets/toggle_button.dart';
 import '../../../../common/widgets/universal_button_widget.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/TextStyles.dart';
@@ -147,7 +141,7 @@ class HomeScreen extends GetView<HomeController> {
                                 base64.encode(bytes);
                           });
                         },
-                        color: CustomColor.primaryBlue,
+                        color: Get.theme.dividerColor,
                         margin: EdgeInsets.symmetric(
                           vertical: ScreenConstant.defaultHeightFifteen,
                           horizontal: ScreenConstant.defaultWidthTwenty,
@@ -203,7 +197,7 @@ class HomeScreen extends GetView<HomeController> {
                         AppStrings.somethingWentWrong.tr, AppStrings.title.tr);
                   }
                 },
-                color: CustomColor.primaryBlue,
+                color: Get.theme.dividerColor,
                 margin: EdgeInsets.symmetric(
                   vertical: ScreenConstant.defaultHeightFifteen,
                   horizontal: ScreenConstant.defaultWidthTwenty,
