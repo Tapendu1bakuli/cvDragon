@@ -30,9 +30,11 @@ class HomeScreen extends GetView<HomeController> {
           AnimatedBuilder(
               animation: controller.animationController,
               builder: (context, child) {
-                double slide = rightSlide * controller.animationController.value +
-                    ScreenConstant.defaultHeightFifteen;
-                double scale = 1.1 - (controller.animationController.value * 0.3);
+                double slide =
+                    rightSlide * controller.animationController.value +
+                        ScreenConstant.defaultHeightFifteen;
+                double scale =
+                    1.1 - (controller.animationController.value * 0.3);
                 return Stack(
                   children: [
                     const Scaffold(
@@ -53,7 +55,8 @@ class HomeScreen extends GetView<HomeController> {
                               color: CustomColor.secondaryBlue,
                               spreadRadius: 30,
                               blurRadius: 50,
-                              offset: Offset(0, 3), // changes position of shadow
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -67,7 +70,8 @@ class HomeScreen extends GetView<HomeController> {
                               scrolledUnderElevation: 0.0,
                               title: Text(
                                 AppStrings.welcomeToCVDragon,
-                                style: TextStyles.carousalSubTitleWidgetBlueText,
+                                style:
+                                    TextStyles.carousalSubTitleWidgetBlueText,
                               ),
                               centerTitle: false,
                               leading: Padding(
@@ -88,15 +92,20 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenConstant.defaultWidthTwenty),
-                              child: Text(AppStrings.title.tr,style: context.textTheme.titleMedium,),
+                                  horizontal:
+                                      ScreenConstant.defaultWidthTwenty),
+                              child: Text(
+                                AppStrings.title.tr,
+                                style: context.textTheme.titleMedium,
+                              ),
                             ),
                             Container(
                               height: ScreenConstant.defaultHeightTen,
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenConstant.defaultWidthTwenty),
+                                  horizontal:
+                                      ScreenConstant.defaultWidthTwenty),
                               child: DefaultEditText(
                                 type: Type.stageName,
                                 prefixIcon: Container(),
@@ -112,15 +121,20 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenConstant.defaultWidthTwenty),
-                              child: Text(AppStrings.description.tr,style: context.textTheme.titleMedium,),
+                                  horizontal:
+                                      ScreenConstant.defaultWidthTwenty),
+                              child: Text(
+                                AppStrings.description.tr,
+                                style: context.textTheme.titleMedium,
+                              ),
                             ),
                             Container(
                               height: ScreenConstant.defaultHeightTen,
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenConstant.defaultWidthTwenty),
+                                  horizontal:
+                                      ScreenConstant.defaultWidthTwenty),
                               child: DefaultEditText(
                                 type: Type.description,
                                 prefixIcon: Container(),
@@ -135,19 +149,30 @@ class HomeScreen extends GetView<HomeController> {
                               height: ScreenConstant.defaultHeightTen,
                             ),
                             Obx(
-                              () => controller.temporaryDocImagePath.value.isEmpty
+                              () => controller
+                                      .temporaryDocImagePath.value.isEmpty
                                   ? const Offstage()
-                                  : Text(AppStrings.image.tr),
+                                  : Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: ScreenConstant
+                                              .defaultWidthTwenty),
+                                      child: Text(
+                                        AppStrings.image.tr,
+                                        style: context.textTheme.titleMedium,
+                                      ),
+                                    ),
                             ),
                             Obx(
-                              () => controller.temporaryDocImagePath.value.isEmpty
+                              () => controller
+                                      .temporaryDocImagePath.value.isEmpty
                                   ? const Offstage()
                                   : Container(
                                       height: ScreenConstant.defaultHeightTen,
                                     ),
                             ),
                             Obx(
-                              () => controller.temporaryDocImagePath.value.isEmpty
+                              () => controller
+                                      .temporaryDocImagePath.value.isEmpty
                                   ? const Offstage()
                                   : Center(
                                       child: ClipRRect(
@@ -167,23 +192,25 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                             ),
                             Obx(
-                              () => controller.temporaryDocImagePath.value.isEmpty
+                              () => controller
+                                      .temporaryDocImagePath.value.isEmpty
                                   ? const Offstage()
                                   : Container(
                                       height: ScreenConstant.defaultHeightTen,
                                     ),
                             ),
                             Obx(
-                              () => controller.temporaryDocImagePath.value.isEmpty
+                              () => controller
+                                      .temporaryDocImagePath.value.isEmpty
                                   ? UniversalButtonWidget(
                                       ontap: () {
                                         chooseCameraOrGalleryModalBottomSheetMenu(
                                             context,
                                             (XFile? selectedImage) async {
-                                          controller.temporaryDocImageName.value =
-                                              selectedImage!.name;
-                                          controller.temporaryDocImagePath.value =
-                                              selectedImage.path;
+                                          controller.temporaryDocImageName
+                                              .value = selectedImage!.name;
+                                          controller.temporaryDocImagePath
+                                              .value = selectedImage.path;
                                           bytes =
                                               await selectedImage.readAsBytes();
                                           controller.base64String.value =
@@ -199,7 +226,8 @@ class HomeScreen extends GetView<HomeController> {
                                       ),
                                       leadingIconvisible: true,
                                       title: AppStrings.addImage.tr,
-                                      titleTextStyle: TextStyles.textStyleRegular
+                                      titleTextStyle: TextStyles
+                                          .textStyleRegular
                                           .apply(color: CustomColor.white),
                                     )
                                   : UniversalButtonWidget(
@@ -218,7 +246,8 @@ class HomeScreen extends GetView<HomeController> {
                                       ),
                                       leadingIconvisible: true,
                                       title: AppStrings.deleteImage.tr,
-                                      titleTextStyle: TextStyles.textStyleRegular
+                                      titleTextStyle: TextStyles
+                                          .textStyleRegular
                                           .apply(color: CustomColor.white),
                                     ),
                             ),
@@ -227,19 +256,24 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                             UniversalButtonWidget(
                               ontap: () {
-                                if (controller.titleController.text.isNotEmpty) {
-                                  if (controller.descController.text.isNotEmpty) {
+                                if (controller
+                                    .titleController.text.isNotEmpty) {
+                                  if (controller
+                                      .descController.text.isNotEmpty) {
                                     if (controller
                                         .base64String.value.isNotEmpty) {
                                       controller.addData(
                                           controller.titleController.text,
                                           controller.descController.text,
-                                          controller.temporaryDocImagePath.value);
+                                          controller
+                                              .temporaryDocImagePath.value);
                                       controller.descController.text = "";
                                       controller.titleController.text = "";
                                       controller.base64String.value = "";
-                                      controller.temporaryDocImagePath.value = "";
-                                      controller.temporaryDocImageName.value = "";
+                                      controller.temporaryDocImagePath.value =
+                                          "";
+                                      controller.temporaryDocImageName.value =
+                                          "";
                                     } else {
                                       showFailureSnackBar(
                                           AppStrings.somethingWentWrong.tr,
@@ -275,10 +309,11 @@ class HomeScreen extends GetView<HomeController> {
                                       child: Text(AppStrings.vlogsListIsEmpty))
                                   : Padding(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              ScreenConstant.defaultWidthTwenty),
+                                          horizontal: ScreenConstant
+                                              .defaultWidthTwenty),
                                       child: ListView.builder(
-                                          physics: const ClampingScrollPhysics(),
+                                          physics:
+                                              const ClampingScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: controller.allData.length,
                                           itemBuilder: (context, index) =>
@@ -290,25 +325,33 @@ class HomeScreen extends GetView<HomeController> {
                                                 image: controller.allData[index]
                                                     ["image"],
                                                 onTapDelete: () {
-                                                  controller.deleteData(controller
-                                                      .allData[index]["id"]);
+                                                  controller.deleteData(
+                                                      controller.allData[index]
+                                                          ["id"]);
                                                 },
                                                 onTapEdit: () {
                                                   Get.toNamed(
                                                       Routes.UPDATEDETAILS,
                                                       arguments: [
-                                                        controller.allData[index]
+                                                        controller
+                                                                .allData[index]
                                                             ["id"],
-                                                        controller.allData[index]
+                                                        controller
+                                                                .allData[index]
                                                             ["title"],
-                                                        controller.allData[index]
+                                                        controller
+                                                                .allData[index]
                                                             ["desc"],
-                                                        controller.allData[index]
+                                                        controller
+                                                                .allData[index]
                                                             ["image"]
                                                       ]);
                                                 },
                                               )),
                                     ),
+                            ),
+                            Container(
+                              height: ScreenConstant.defaultHeightForty,
                             )
                           ],
                         )),
