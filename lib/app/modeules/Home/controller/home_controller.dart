@@ -1,12 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:cv_dragon/database/db_helper.dart';
 import 'package:cv_dragon/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
-class HomeController extends GetxController{
+class HomeController extends GetxController with GetSingleTickerProviderStateMixin{
+
+  late final AnimationController animationController;
 
   RxBool toggleValue = false.obs;
   RxList<Map<String, dynamic>> allData = <Map<String, dynamic>>[].obs;
@@ -25,7 +24,15 @@ class HomeController extends GetxController{
 @override
   void onInit() {
     super.onInit();
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     refreshData();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   void refreshData() async {
@@ -49,5 +56,11 @@ class HomeController extends GetxController{
     await SQLHelper.deleteData(id);
     showSuccessSnackbar("Item deleted", "Deletion successful.");
     refreshData();
+  }
+
+  toggleAnimation() {
+    animationController.isDismissed
+        ? animationController.forward()
+        : animationController.reverse();
   }
 }
