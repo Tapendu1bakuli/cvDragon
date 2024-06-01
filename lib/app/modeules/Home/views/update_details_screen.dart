@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../../../utils/TextStyles.dart';
 import '../../../../utils/colors/app_colors.dart';
 import '../../../../utils/common_text_form_field.dart';
 import '../../../../utils/text_utils/app_strings.dart';
+import '../../../../utils/utils.dart';
 
 class UpdateDetailsScreen extends GetView<HomeController> {
   const UpdateDetailsScreen({super.key});
@@ -30,14 +32,56 @@ class UpdateDetailsScreen extends GetView<HomeController> {
             vertical: ScreenConstant.defaultHeightForty),
         child: ListView(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: SizedBox(
-                height: ScreenConstant.screenHeightHalf,
-                child: Image.file(
-                fit: BoxFit.fitWidth,
-                File(data[3]),
-              ),),
+            Obx(
+              () => Stack(children: [
+                Positioned(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: SizedBox(
+                      width: Get.width,
+                      height: ScreenConstant.screenHeightHalf,
+                      child: Image.file(
+                        fit: BoxFit.fitWidth,
+                        File(controller.temporaryDocImagePath.value.isEmpty
+                            ? data[3]
+                            : controller.temporaryDocImagePath.value),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                    bottom: ScreenConstant.defaultHeightThirty,
+                    right: ScreenConstant.defaultWidthThirty,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: controller.temporaryDocImagePath.value.isEmpty
+                              ? CustomColor.alertDialogButton
+                              : CustomColor.orange),
+                      child: IconButton(
+                        icon: Icon(
+                            controller.temporaryDocImagePath.value.isEmpty
+                                ? Icons.edit
+                                : Icons.close),
+                        color: CustomColor.white,
+                        onPressed: () {
+                          if (controller.temporaryDocImagePath.value.isEmpty) {
+                            chooseCameraOrGalleryModalBottomSheetMenu(context,
+                                (XFile? selectedImage) async {
+                              controller.temporaryDocImageName.value =
+                                  selectedImage!.name;
+                              controller.temporaryDocImagePath.value =
+                                  selectedImage.path;
+                              print(controller.temporaryDocImagePath.value);
+                            });
+                          } else {
+                            controller.temporaryDocImagePath.value = "";
+                            controller.temporaryDocImageName.value = "";
+                          }
+                        },
+                      ),
+                    ))
+              ]),
             ),
             Container(
               height: ScreenConstant.defaultHeightTen,
@@ -83,9 +127,14 @@ class UpdateDetailsScreen extends GetView<HomeController> {
                         : controller.titleEditController.text,
                     controller.descEditController.text.isEmpty
                         ? data[2]
-                        : controller.descEditController.text,controller.base64String.value);
+                        : controller.descEditController.text,
+                    controller.temporaryDocImagePath.value.isEmpty
+                        ? data[3]
+                        : controller.temporaryDocImagePath.value);
                 controller.descEditController.text = "";
                 controller.titleEditController.text = "";
+                controller.temporaryDocImagePath.value = "";
+                controller.temporaryDocImageName.value = "";
                 Get.back();
               },
               color: CustomColor.primaryBlue,
