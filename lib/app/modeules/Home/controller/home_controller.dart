@@ -20,7 +20,6 @@ class HomeController extends GetxController{
   RxString temporaryDocImageName = "".obs;
   RxString temporaryDocImagePath = "".obs;
 
-  late final Uint8List bytes;
   RxString base64String = "".obs;
 
 @override
@@ -35,13 +34,13 @@ class HomeController extends GetxController{
     isLoading.value = false;
   }
 
- Future<void> addData(String title, String desc) async {
-  await SQLHelper.createData(title, desc);
+ Future<void> addData(String title, String desc,String image) async {
+  await SQLHelper.createData(title, desc,image);
   refreshData();
  }
 
-  Future<void> updateData(int id,String title,String description) async {
-    await SQLHelper.updateData(id,title, description);
+  Future<void> updateData(int id,String title,String description,String image) async {
+    await SQLHelper.updateData(id,title, description,image);
     refreshData();
     Get.back();
   }

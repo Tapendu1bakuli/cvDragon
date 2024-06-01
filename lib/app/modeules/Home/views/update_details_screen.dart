@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +30,15 @@ class UpdateDetailsScreen extends GetView<HomeController> {
             vertical: ScreenConstant.defaultHeightForty),
         child: ListView(
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: SizedBox(
+                height: ScreenConstant.screenHeightHalf,
+                child: Image.file(
+                fit: BoxFit.fitWidth,
+                File(data[3]),
+              ),),
+            ),
             Container(
               height: ScreenConstant.defaultHeightTen,
             ),
@@ -72,7 +83,7 @@ class UpdateDetailsScreen extends GetView<HomeController> {
                         : controller.titleEditController.text,
                     controller.descEditController.text.isEmpty
                         ? data[2]
-                        : controller.descEditController.text);
+                        : controller.descEditController.text,controller.base64String.value);
                 controller.descEditController.text = "";
                 controller.titleEditController.text = "";
                 Get.back();

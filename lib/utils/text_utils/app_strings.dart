@@ -18,6 +18,7 @@ class AppStrings{
   static const String description = "Description: ";
   static const String updateDatabase = "Update database";
   static const String needADescription = "Need a description to submit.";
+  static const String needAImage = "Need a image to submit.";
   static const String needATitle = "Need a title to submit.";
   static const String somethingWentWrong = "Something went wrong!";
   static const String nuritopiaWebLink = "https://nuritopia.com/";

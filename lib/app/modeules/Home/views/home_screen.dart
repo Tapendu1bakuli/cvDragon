@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
@@ -26,6 +27,7 @@ class HomeScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    Uint8List bytes;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -115,9 +117,9 @@ class HomeScreen extends GetView<HomeController> {
                           .defaultHeightOneForty,
                       width: ScreenConstant
                           .defaultWidthOneSeventy,
-                      child: Image.memory(
+                      child: Image.file(
                         fit: BoxFit.fitWidth,
-                          base64Decode(controller.base64String.value)
+                        File(controller.temporaryDocImagePath.value),
                       ),
                     ),
                   ),
@@ -144,8 +146,8 @@ class HomeScreen extends GetView<HomeController> {
                           selectedImage.path;
                       print(
                           controller.temporaryDocImagePath.value);
-                      controller.bytes = await selectedImage.readAsBytes();
-                      controller.base64String.value = base64.encode(controller.bytes);
+                      bytes = await selectedImage.readAsBytes();
+                      controller.base64String.value = base64.encode(bytes);
                     });
                   },
                   color: CustomColor.primaryBlue,
@@ -184,10 +186,20 @@ class HomeScreen extends GetView<HomeController> {
                 ontap: () {
                   if (controller.titleController.text.isNotEmpty) {
                     if (controller.descController.text.isNotEmpty) {
-                      controller.addData(controller.titleController.text,
-                          controller.descController.text);
-                      controller.descController.text = "";
-                      controller.titleController.text = "";
+                      if(controller.base64String.value.isNotEmpty){
+                        controller.addData(controller.titleController.text,
+                            controller.descController.text, controller
+                                .temporaryDocImagePath
+                                .value);
+                        controller.descController.text = "";
+                        controller.titleController.text = "";
+                        controller.base64String.value = "";
+                        controller.temporaryDocImagePath.value = "";
+                        controller.temporaryDocImageName.value = "";
+                      }else{
+                        showFailureSnackBar(AppStrings.somethingWentWrong.tr,
+                            AppStrings.needAImage.tr);
+                      }
                     } else {
                       showFailureSnackBar(AppStrings.somethingWentWrong.tr,
                           AppStrings.needADescription.tr);
@@ -230,6 +242,16 @@ class HomeScreen extends GetView<HomeController> {
                                         ScreenConstant.defaultHeightFifteen),
                                 child: Row(
                                   children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: SizedBox(
+                                        height: ScreenConstant.defaultHeightNinety,
+                                        child: Image.file(
+                                        fit: BoxFit.fitWidth,
+                                        File(controller.allData[index]["image"]),
+                                      ),),
+                                    ),
+                                    Container(width: ScreenConstant.defaultWidthTen,),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -252,7 +274,10 @@ class HomeScreen extends GetView<HomeController> {
                                             controller.allData[index]
                                             ["title"],
                                             controller.allData[index]
-                                            ["desc"]]);
+                                            ["desc"],
+                                              controller.allData[index]
+                                              ["image"]]
+                                          );
                                         },
                                         child: const Icon(
                                           Icons.edit,

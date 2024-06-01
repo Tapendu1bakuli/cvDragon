@@ -6,6 +6,7 @@ class SQLHelper {
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     title TEXT,
     desc TEXT,
+    image TEXT,
     createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )""");
   }
@@ -16,9 +17,9 @@ class SQLHelper {
     });
   }
 
-  static Future<int> createData(String title,String? desc) async{
+  static Future<int> createData(String title,String? desc,String image) async{
     final db = await SQLHelper.db();
-    final data = {"title" : title, "desc" : desc};
+    final data = {"title" : title, "desc" : desc,"image": image};
     final id = await db.insert("data", data,conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }
@@ -33,12 +34,13 @@ class SQLHelper {
     return db.query("data",where: "id = ?", whereArgs: [id],limit: 1);
   }
 
-  static Future<int> updateData(int id, String title, String? desc) async {
+  static Future<int> updateData(int id, String title, String? desc,String? image) async {
     final db = await SQLHelper.db();
     final data = {
      "title" : title,
      "desc" : desc,
-     "createdAt" : DateTime.now().toString()
+     "createdAt" : DateTime.now().toString(),
+      "image": image
     };
     final result = await db.update("data",data, where: "id = ?", whereArgs: [id]);
     return result;
