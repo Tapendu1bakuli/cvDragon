@@ -217,16 +217,13 @@ class BookDescription extends GetView<HomeController> {
                   showFailureSnackBar("Error", "Nothing ti update");
                 }else{
                   await SQLHelper().updateBook(
-                    arguments[6],
-                    controller.handleController.text.isNotEmpty
-                        ? controller.handleController.text
-                        : arguments[2],
-                    controller.publisherController.text.isNotEmpty
+                   id: arguments[6],title: arguments[0],handle: controller.handleController.text.isNotEmpty
+                      ? controller.handleController.text
+                      : arguments[2],isbn: controller.isbnController.text.isNotEmpty
+                      ? controller.isbnController.text
+                      : arguments[4],publisher: controller.publisherController.text.isNotEmpty
                         ? controller.publisherController.text
                         : arguments[3],
-                    controller.isbnController.text.isNotEmpty
-                        ? controller.isbnController.text
-                        : arguments[4],
                   );
                   Get.back();
                   controller

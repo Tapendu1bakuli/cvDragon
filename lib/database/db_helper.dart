@@ -37,6 +37,7 @@ class SQLHelper {
     await db.insert(
       'book',
       {
+        'isLocallyCreated': 1,
         'book_id': null,
         'Year': year,
         'Title': title,
@@ -48,9 +49,27 @@ class SQLHelper {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
-  Future<void> updateBook(int id,String handle,String publisher,String isbn) async {
+  Future<void> updateBook({int? id, String? title, String? handle, String? publisher, String? isbn}) async {
     final db = await SQLHelper.db();
 
+    // Build the where clause dynamically
+    String whereClause = '';
+    List<dynamic> whereArgs = [];
+
+    if (id != null) {
+      whereClause = 'id = ?';
+      whereArgs.add(id);
+    }
+
+    if (title != null) {
+      if (whereClause.isNotEmpty) {
+        whereClause += ' OR ';
+      }
+      whereClause += 'Title = ?';
+      whereArgs.add(title);
+    }
+
+    // Perform the update
     await db.update(
       'book',
       {
@@ -58,10 +77,11 @@ class SQLHelper {
         'Publisher': publisher,
         'ISBN': isbn,
       },
-      where: 'id = ?',
-      whereArgs: [id],
+      where: whereClause,
+      whereArgs: whereArgs,
     );
   }
+
   Future<void> insertBooks(BooksLists result) async {
     final db = await SQLHelper.db();
     var printing = await db.insert('book', result.toMap(),
@@ -107,17 +127,39 @@ class SQLHelper {
     print('Parsed tasks: ${tasks.length} records');
     return tasks;
   }
-   deleteBookById(int id) async {
+  Future<void> deleteBookByIdOrTitle({int? bookId, String? title}) async {
     final db = await SQLHelper.db(); // Assumes you have a reference to your database
+
+    // Build the where clause dynamically
+    String whereClause = '';
+    List<dynamic> whereArgs = [];
+
+    if (bookId != null) {
+      whereClause = 'book_id = ?';
+      whereArgs.add(bookId);
+    }
+
+    if (title != null) {
+      if (whereClause.isNotEmpty) {
+        whereClause += ' OR ';
+      }
+      whereClause += 'Title = ?';
+      whereArgs.add(title);
+    }
+
+    // Perform the deletion
     await db.delete(
       'book',
-      where: 'book_id = ?',
-      whereArgs: [id],
+      where: whereClause,
+      whereArgs: whereArgs,
     );
+
+    // Refresh the list of books
     final dbTasks = await SQLHelper().fetchBooks();
     Get.find<HomeController>().getBooksList.clear();
     Get.find<HomeController>().getBooksList.addAll(dbTasks);
   }
+
   Future<bool> isBookDeleted(int bookId) async {
     final db = await SQLHelper.db();
     final result = await db.query(

@@ -231,8 +231,11 @@ class HomeScreen extends GetView<HomeController> {
 
                                                           // Delete the book from the book table
                                                           await SQLHelper()
-                                                              .deleteBookById(
-                                                                  bookId);
+                                                              .deleteBookByIdOrTitle(
+                                                                 bookId: bookId,title:controller
+                                                              .getBooksList[
+                                                          index]
+                                                              .title);
 
                                                           // Remove the item from the list and refresh
 
