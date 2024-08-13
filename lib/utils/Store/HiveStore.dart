@@ -21,6 +21,7 @@ class Keys {
   static const String MBTI = "mbti";
   static const String AUTHORIZATIONTOKEN = "authorizationToken";
   static const String WALLETID   = "walletId";
+  static const String FCM   = "FCM";
 }
 
 class HiveStore {
