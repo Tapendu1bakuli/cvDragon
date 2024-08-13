@@ -37,6 +37,7 @@ class SQLHelper {
     await db.insert(
       'book',
       {
+        'book_id': null,
         'Year': year,
         'Title': title,
         'handle': handle,

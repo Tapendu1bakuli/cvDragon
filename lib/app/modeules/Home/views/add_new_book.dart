@@ -1,4 +1,5 @@
 import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
+import 'package:cv_dragon/database/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,6 +31,26 @@ class AddNewBookScreen extends GetView<HomeController> {
         child: ListView(
           children: [
             Text(
+              "Title",
+              style: TextStyles.subtitleSmall.copyWith(
+                  color: CustomColor.primaryDeepblue.withOpacity(0.8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightFour,
+            ),
+            DefaultEditText(
+              type: Type.stageName,
+              prefixIcon: Container(),
+              style: TextStyles.textFieldTextStyleSemiBold,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              controller: controller.titleController,
+              hintText: AppStrings.enterDescription.tr,
+            ),
+
+            Text(
               "Handle",
               style: TextStyles.subtitleSmall.copyWith(
                   color: CustomColor.primaryDeepblue.withOpacity(0.8),
@@ -48,6 +69,49 @@ class AddNewBookScreen extends GetView<HomeController> {
               controller: controller.handleController,
               hintText: AppStrings.enterDescription.tr,
             ),
+            Container(
+              height: ScreenConstant.defaultHeightTen,
+            ),
+            Text(
+              "Year",
+              style: TextStyles.subtitleSmall.copyWith(
+                  color: CustomColor.primaryDeepblue.withOpacity(0.8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightFour,
+            ),
+            DefaultEditText(
+              type: Type.stageName,
+              prefixIcon: Container(),
+              style: TextStyles.textFieldTextStyleSemiBold,
+              keyboardType: TextInputType.number,
+              obscureText: true,
+              controller: controller.yearController,
+              hintText: AppStrings.enterDescription.tr,
+            ),
+
+            Text(
+              "Pages",
+              style: TextStyles.subtitleSmall.copyWith(
+                  color: CustomColor.primaryDeepblue.withOpacity(0.8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightFour,
+            ),
+            DefaultEditText(
+              type: Type.stageName,
+              prefixIcon: Container(),
+              style: TextStyles.textFieldTextStyleSemiBold,
+              keyboardType: TextInputType.number,
+              obscureText: true,
+              controller: controller.pagesController,
+              hintText: AppStrings.enterDescription.tr,
+            ),
+
             Container(
               height: ScreenConstant.defaultHeightTen,
             ),
@@ -98,7 +162,9 @@ class AddNewBookScreen extends GetView<HomeController> {
             ),
             UniversalButtonWidget(
               ontap: () async {
-
+              await SQLHelper().insertBook(int.parse(controller.yearController.text),controller.titleController.text,controller.handleController.text,controller.publisherController.text,controller.isbnController.text,int.parse(controller.pagesController.text));
+              Get.back();
+              controller.booksListFetch();
               },
               color: CustomColor.orange,
               margin: EdgeInsets.symmetric(
@@ -106,7 +172,7 @@ class AddNewBookScreen extends GetView<HomeController> {
                 horizontal: ScreenConstant.defaultWidthTwenty,
               ),
               leadingIconvisible: true,
-              title: AppStrings.update.tr,
+              title: AppStrings.save.tr,
               titleTextStyle:
               TextStyles.textStyleRegular.apply(color: CustomColor.white),
             ),

@@ -24,6 +24,8 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
   final TextEditingController publisherController = TextEditingController();
   final TextEditingController isbnController = TextEditingController();
   final TextEditingController pagesController = TextEditingController();
+  final TextEditingController yearController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   //variables for storing the image path and image name after get the image either from gallery or camera.
   RxString temporaryDocImageName = "".obs;
   RxString temporaryDocImagePath = "".obs;

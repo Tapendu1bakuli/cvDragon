@@ -80,6 +80,12 @@ class HomeScreen extends GetView<HomeController> {
                                 actions: [
                                   IconButton(
                                       onPressed: () {
+                                        controller.titleController.text = "";
+                                        controller.handleController.text = "";
+                                        controller.yearController.text = "";
+                                        controller.pagesController.text = "";
+                                        controller.publisherController.text = "";
+                                        controller.isbnController.text = "";
                                        Get.toNamed(Routes.ADDNEWBOOKS);
                                       },
                                       icon: const Icon(Icons.add)),

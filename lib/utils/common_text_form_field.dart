@@ -455,7 +455,7 @@ class _DefaultEditTextState extends State<DefaultEditText> {
             initialValue: widget.initialValue,
             controller: widget.controller,
             //validator: passwordValidator,
-            keyboardType: TextInputType.text,
+            keyboardType: widget.keyboardType,
             autofocus: false,
             maxLines: 1,
             autovalidateMode: AutovalidateMode.onUserInteraction,
