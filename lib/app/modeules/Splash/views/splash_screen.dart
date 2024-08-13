@@ -4,7 +4,6 @@ import 'package:cv_dragon/utils/animation_utilis/animation_utilis.dart';
 import 'package:cv_dragon/utils/text_utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../../utils/TextStyles.dart';
 
@@ -19,10 +18,10 @@ class SplashScreen extends GetView<SplashController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-                height: ScreenConstant.defaultHeightNinety,
-                width: ScreenConstant.defaultWidthEighty,
-                child: Lottie.asset(AnimationUtilis.splashAnimation)),
+            // SizedBox(
+            //     height: ScreenConstant.defaultHeightNinety,
+            //     width: ScreenConstant.defaultWidthEighty,
+            //     child: Lottie.asset(AnimationUtilis.splashAnimation)),
             Text(
               AppStrings.welcomeToCVDragon,
               style: context.textTheme.headlineMedium,

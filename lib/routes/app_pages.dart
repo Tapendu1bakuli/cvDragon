@@ -1,4 +1,6 @@
 import 'package:cv_dragon/app/modeules/Home/binding/home_binding.dart';
+import 'package:cv_dragon/app/modeules/Home/views/add_new_book.dart';
+import 'package:cv_dragon/app/modeules/Home/views/book_description.dart';
 import 'package:cv_dragon/app/modeules/Home/views/home_screen.dart';
 import 'package:cv_dragon/app/modeules/Home/views/update_details_screen.dart';
 import 'package:cv_dragon/routes/routes.dart';
@@ -21,9 +23,19 @@ class Theme1AppPages {
       page: () => const HomeScreen(),
       binding: HomeBinding(),
     ),
+    // GetPage(
+    //   name: Routes.UPDATEDETAILS,
+    //   page: () => const UpdateDetailsScreen(),
+    //   binding: HomeBinding(),
+    // ),
     GetPage(
-      name: Routes.UPDATEDETAILS,
-      page: () => const UpdateDetailsScreen(),
+      name: Routes.BOOKDESCRIPTION,
+      page: () =>  BookDescription(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.ADDNEWBOOKS,
+      page: () =>  AddNewBookScreen(),
       binding: HomeBinding(),
     ),
   ];

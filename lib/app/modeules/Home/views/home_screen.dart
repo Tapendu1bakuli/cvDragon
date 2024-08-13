@@ -9,8 +9,11 @@ import 'package:cv_dragon/device_manager/screen_constants.dart';
 import 'package:cv_dragon/utils/text_utils/app_strings.dart';
 import 'package:cv_dragon/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:sqflite/sqflite.dart';
 import '../../../../common/widgets/universal_button_widget.dart';
+import '../../../../database/db_helper.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/TextStyles.dart';
 import '../../../../utils/colors/app_colors.dart';
@@ -25,337 +28,493 @@ class HomeScreen extends GetView<HomeController> {
     Uint8List bytes;
     return PopScope(
       canPop: false,
-      child: Stack(
-        children: [
-          AnimatedBuilder(
-              animation: controller.animationController,
-              builder: (context, child) {
-                double slide =
-                    rightSlide * controller.animationController.value +
-                        ScreenConstant.defaultHeightFifteen;
-                double scale =
-                    1.1 - (controller.animationController.value * 0.3);
-                return Stack(
-                  children: [
-                    const Scaffold(
-                      backgroundColor: CustomColor.primaryBlue,
-                      body: DrawerDataScreen(),
-                    ),
-                    Transform(
-                      transform: Matrix4.identity()
-                        ..translate(slide)
-                        ..scale(scale),
-                      alignment: Alignment.center,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            right: ScreenConstant.defaultWidthThirty),
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: CustomColor.secondaryBlue,
-                              spreadRadius: 30,
-                              blurRadius: 50,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: Scaffold(
-                            body: ListView(
-                          children: [
-                            Container(
-                              height: ScreenConstant.defaultHeightThirty,
-                            ),
-                            AppBar(
-                              scrolledUnderElevation: 0.0,
-                              title: Text(
-                                AppStrings.welcomeToCVDragon,
-                                style:
-                                    TextStyles.carousalSubTitleWidgetBlueText,
+      child: Obx(
+        () => Stack(
+          children: [
+            AnimatedBuilder(
+                animation: controller.animationController,
+                builder: (context, child) {
+                  double slide =
+                      rightSlide * controller.animationController.value +
+                          ScreenConstant.defaultHeightFifteen;
+                  double scale =
+                      1.1 - (controller.animationController.value * 0.3);
+                  return Stack(
+                    children: [
+                      const Scaffold(
+                        backgroundColor: CustomColor.primaryBlue,
+                        body: DrawerDataScreen(),
+                      ),
+                      Transform(
+                        transform: Matrix4.identity()
+                          ..translate(slide)
+                          ..scale(scale),
+                        alignment: Alignment.center,
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              right: ScreenConstant.defaultWidthThirty),
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: CustomColor.secondaryBlue,
+                                spreadRadius: 30,
+                                blurRadius: 50,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
                               ),
-                              centerTitle: false,
-                              leading: Padding(
-                                padding: EdgeInsets.only(
-                                    left: ScreenConstant.defaultWidthTen),
-                                child: IconButton(
-                                  onPressed: () => controller.toggleAnimation(),
-                                  icon: AnimatedIcon(
-                                    icon: AnimatedIcons.menu_close,
-                                    color: CustomColor.white,
-                                    progress: controller.animationController,
+                            ],
+                          ),
+                          child: Scaffold(
+                              body: ListView(
+                            children: [
+                              Container(
+                                height: ScreenConstant.defaultHeightThirty,
+                              ),
+                              AppBar(
+                                scrolledUnderElevation: 0.0,
+                                title: Text(
+                                  AppStrings.welcomeToCVDragon,
+                                  style:
+                                      TextStyles.carousalSubTitleWidgetBlueText,
+                                ),
+                                actions: [
+                                  IconButton(
+                                      onPressed: () {
+                                       Get.toNamed(Routes.ADDNEWBOOKS);
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                  IconButton(
+                                      onPressed: () {
+                                        controller.booksListFetch();
+                                      },
+                                      icon: const Icon(Icons.sync))
+                                ],
+                                centerTitle: false,
+                                leading: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: ScreenConstant.defaultWidthTen),
+                                  child: IconButton(
+                                    onPressed: () =>
+                                        controller.toggleAnimation(),
+                                    icon: AnimatedIcon(
+                                      icon: AnimatedIcons.menu_close,
+                                      color: CustomColor.white,
+                                      progress: controller.animationController,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      ScreenConstant.defaultWidthTwenty),
-                              child: Text(
-                                AppStrings.title.tr,
-                                style: context.textTheme.titleMedium,
+                              Container(
+                                height: ScreenConstant.defaultHeightTen,
                               ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      ScreenConstant.defaultWidthTwenty),
-                              child: DefaultEditText(
-                                type: Type.stageName,
-                                prefixIcon: Container(),
-                                style: TextStyles.textFieldTextStyleSemiBold,
-                                keyboardType: TextInputType.text,
-                                obscureText: true,
-                                controller: controller.titleController,
-                                hintText: AppStrings.enterTitle.tr,
-                              ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      ScreenConstant.defaultWidthTwenty),
-                              child: Text(
-                                AppStrings.description.tr,
-                                style: context.textTheme.titleMedium,
-                              ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      ScreenConstant.defaultWidthTwenty),
-                              child: DefaultEditText(
-                                type: Type.description,
-                                prefixIcon: Container(),
-                                style: TextStyles.textFieldTextStyleSemiBold,
-                                keyboardType: TextInputType.text,
-                                obscureText: true,
-                                controller: controller.descController,
-                                hintText: AppStrings.enterDescription.tr,
-                              ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            Obx(
-                              () => controller
-                                      .temporaryDocImagePath.value.isEmpty
-                                  ? const Offstage()
-                                  : Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: ScreenConstant
-                                              .defaultWidthTwenty),
-                                      child: Text(
-                                        AppStrings.image.tr,
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                    ),
-                            ),
-                            Obx(
-                              () => controller
-                                      .temporaryDocImagePath.value.isEmpty
-                                  ? const Offstage()
-                                  : Container(
-                                      height: ScreenConstant.defaultHeightTen,
-                                    ),
-                            ),
-                            Obx(
-                              () => controller
-                                      .temporaryDocImagePath.value.isEmpty
-                                  ? const Offstage()
-                                  : Center(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: SizedBox(
-                                          height: ScreenConstant
-                                              .defaultHeightOneForty,
-                                          width: ScreenConstant
-                                              .defaultWidthOneSeventy,
-                                          child: Image.file(
-                                            fit: BoxFit.fitWidth,
-                                            File(controller
-                                                .temporaryDocImagePath.value),
-                                          ),
+                              Obx(
+                                () => controller.getBooksList.isNotEmpty
+                                    ? Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: ScreenConstant
+                                                .defaultWidthTwenty),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              AppStrings.listsOfBooks.tr,
+                                              style:
+                                                  context.textTheme.titleMedium,
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              "${AppStrings.numberOfBooks.tr} ${controller.getBooksList.length}",
+                                              style:
+                                                  context.textTheme.titleMedium,
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                            ),
-                            Obx(
-                              () => controller
-                                      .temporaryDocImagePath.value.isEmpty
-                                  ? const Offstage()
-                                  : Container(
-                                      height: ScreenConstant.defaultHeightTen,
-                                    ),
-                            ),
-                            Obx(
-                              () => controller
-                                      .temporaryDocImagePath.value.isEmpty
-                                  ? UniversalButtonWidget(
-                                      ontap: () {
-                                        chooseCameraOrGalleryModalBottomSheetMenu(
-                                            context,
-                                            (XFile? selectedImage) async {
-                                          controller.temporaryDocImageName
-                                              .value = selectedImage!.name;
-                                          controller.temporaryDocImagePath
-                                              .value = selectedImage.path;
-                                        });
-                                      },
-                                      color: Get.theme.dividerColor,
-                                      margin: EdgeInsets.symmetric(
-                                        vertical:
-                                            ScreenConstant.defaultHeightFifteen,
-                                        horizontal:
-                                            ScreenConstant.defaultWidthTwenty,
-                                      ),
-                                      leadingIconvisible: true,
-                                      title: AppStrings.addImage.tr,
-                                      titleTextStyle: TextStyles
-                                          .textStyleRegular
-                                          .apply(color: CustomColor.white),
-                                    )
-                                  : UniversalButtonWidget(
-                                      ontap: () {
-                                        controller.temporaryDocImageName.value =
-                                            "";
-                                        controller.temporaryDocImagePath.value =
-                                            "";
-                                      },
-                                      color: CustomColor.orange,
-                                      margin: EdgeInsets.symmetric(
-                                        vertical:
-                                            ScreenConstant.defaultHeightFifteen,
-                                        horizontal:
-                                            ScreenConstant.defaultWidthTwenty,
-                                      ),
-                                      leadingIconvisible: true,
-                                      title: AppStrings.deleteImage.tr,
-                                      titleTextStyle: TextStyles
-                                          .textStyleRegular
-                                          .apply(color: CustomColor.white),
-                                    ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            UniversalButtonWidget(
-                              ontap: () {
-                                if (controller
-                                    .titleController.text.isNotEmpty) {
-                                  if (controller
-                                      .descController.text.isNotEmpty) {
-                                    if (controller
-                                        .temporaryDocImagePath.value.isNotEmpty) {
-                                      controller.addData(
-                                          controller.titleController.text,
-                                          controller.descController.text,
-                                          controller
-                                              .temporaryDocImagePath.value);
-                                      controller.descController.text = "";
-                                      controller.titleController.text = "";
-                                      controller.temporaryDocImagePath.value =
-                                          "";
-                                      controller.temporaryDocImageName.value =
-                                          "";
-                                    } else {
-                                      showFailureSnackBar(
-                                          AppStrings.somethingWentWrong.tr,
-                                          AppStrings.needAImage.tr);
-                                    }
-                                  } else {
-                                    showFailureSnackBar(
-                                        AppStrings.somethingWentWrong.tr,
-                                        AppStrings.needADescription.tr);
-                                  }
-                                } else {
-                                  showFailureSnackBar(
-                                      AppStrings.somethingWentWrong.tr,
-                                      AppStrings.title.tr);
-                                }
-                              },
-                              color: Get.theme.dividerColor,
-                              margin: EdgeInsets.symmetric(
-                                vertical: ScreenConstant.defaultHeightFifteen,
-                                horizontal: ScreenConstant.defaultWidthTwenty,
+                                      )
+                                    : const Offstage(),
                               ),
-                              leadingIconvisible: true,
-                              title: AppStrings.addVlog.tr,
-                              titleTextStyle: TextStyles.textStyleRegular
-                                  .apply(color: CustomColor.white),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightTen,
-                            ),
-                            Obx(
-                              () => controller.allData.isEmpty
-                                  ? const Center(
-                                      child: Text(AppStrings.vlogsListIsEmpty))
-                                  : Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: ScreenConstant
-                                              .defaultWidthTwenty),
-                                      child: ListView.builder(
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: controller.allData.length,
-                                          itemBuilder: (context, index) =>
-                                              HomeCardWidget(
-                                                title: controller.allData[index]
-                                                    ["title"],
-                                                description: controller
-                                                    .allData[index]["desc"],
-                                                image: controller.allData[index]
-                                                    ["image"],
-                                                onTapDelete: () {
-                                                  controller.deleteData(
-                                                      controller.allData[index]
-                                                          ["id"]);
-                                                },
-                                                onTapEdit: () {
-                                                  Get.toNamed(
-                                                      Routes.UPDATEDETAILS,
-                                                      arguments: [
+                              Obx(
+                                () => controller.getBooksList.isNotEmpty
+                                    ? ListView.builder(
+                                        physics: const ClampingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            controller.getBooksList.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                            onTap: () async {
+                                              controller.publisherController.text = "";
+                                              controller.handleController.text = "";
+                                              controller.pagesController.text = "";
+                                              controller.isbnController.text = "";
+                                              Get.toNamed(
+                                                  Routes.BOOKDESCRIPTION,
+                                                  arguments: [
+                                                    controller
+                                                        .getBooksList[index]
+                                                        .title,
+                                                    controller
+                                                        .getBooksList[index]
+                                                        .year,
+                                                    controller
+                                                        .getBooksList[index]
+                                                        .handle,
+                                                    controller
+                                                        .getBooksList[index]
+                                                        .publisher,
+                                                    controller
+                                                        .getBooksList[index]
+                                                        .iSBN,
+                                                    controller
+                                                        .getBooksList[index]
+                                                        .pages,
+                                                    controller
+                                                        .getBooksList[index].id
+                                                  ]);
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: ScreenConstant
+                                                      .defaultWidthTen,
+                                                  vertical: ScreenConstant
+                                                      .defaultHeightTen),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: ScreenConstant
+                                                      .defaultHeightFifteen),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: CustomColor.homeGrey
+                                                      .withOpacity(0.1)),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: ScreenConstant
+                                                        .defaultWidthTwenty),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Text(
                                                         controller
-                                                                .allData[index]
-                                                            ["id"],
-                                                        controller
-                                                                .allData[index]
-                                                            ["title"],
-                                                        controller
-                                                                .allData[index]
-                                                            ["desc"],
-                                                        controller
-                                                                .allData[index]
-                                                            ["image"]
-                                                      ]);
-                                                },
-                                              )),
-                                    ),
-                            ),
-                            Container(
-                              height: ScreenConstant.defaultHeightForty,
-                            )
-                          ],
-                        )),
+                                                            .getBooksList[index]
+                                                            .title,
+                                                        style: TextStyles
+                                                            .subtitleSmall
+                                                            .copyWith(
+                                                                color: CustomColor
+                                                                    .primaryBlack
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800),
+                                                      ),
+                                                    ),
+                                                    const Spacer(),
+                                                    IconButton(
+                                                        onPressed: () async {
+                                                          final bookId =
+                                                              controller
+                                                                  .getBooksList[
+                                                                      index]
+                                                                  .id;
+
+                                                          // Insert the book id into the booksDeleted table
+                                                          await SQLHelper()
+                                                              .insertBooksDeleted(
+                                                                  bookId);
+
+                                                          // Delete the book from the book table
+                                                          await SQLHelper()
+                                                              .deleteBookById(
+                                                                  bookId);
+
+                                                          // Remove the item from the list and refresh
+
+                                                          controller
+                                                              .refreshBooksList();
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.delete,
+                                                          color: CustomColor
+                                                              .orange,
+                                                        ))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        })
+                                    : Center(
+                                        child: const Text(
+                                            "Tap on sync button to get books first time!!"),
+                                      ),
+                              ),
+                              // Container(
+                              //   height: ScreenConstant.defaultHeightTen,
+                              // ),
+                              // Padding(
+                              //   padding: EdgeInsets.symmetric(
+                              //       horizontal:
+                              //           ScreenConstant.defaultWidthTwenty),
+                              //   child: DefaultEditText(
+                              //     type: Type.stageName,
+                              //     prefixIcon: Container(),
+                              //     style: TextStyles.textFieldTextStyleSemiBold,
+                              //     keyboardType: TextInputType.text,
+                              //     obscureText: true,
+                              //     controller: controller.titleController,
+                              //     hintText: AppStrings.enterTitle.tr,
+                              //   ),
+                              // ),
+                              // Container(
+                              //   height: ScreenConstant.defaultHeightTen,
+                              // ),
+                              // Padding(
+                              //   padding: EdgeInsets.symmetric(
+                              //       horizontal:
+                              //           ScreenConstant.defaultWidthTwenty),
+                              //   child: Text(
+                              //     AppStrings.description.tr,
+                              //     style: context.textTheme.titleMedium,
+                              //   ),
+                              // ),
+                              // Container(
+                              //   height: ScreenConstant.defaultHeightTen,
+                              // ),
+                              // Padding(
+                              //   padding: EdgeInsets.symmetric(
+                              //       horizontal:
+                              //           ScreenConstant.defaultWidthTwenty),
+                              //   child: DefaultEditText(
+                              //     type: Type.description,
+                              //     prefixIcon: Container(),
+                              //     style: TextStyles.textFieldTextStyleSemiBold,
+                              //     keyboardType: TextInputType.text,
+                              //     obscureText: true,
+                              //     controller: controller.descController,
+                              //     hintText: AppStrings.enterDescription.tr,
+                              //   ),
+                              // ),
+                              // Container(
+                              //   height: ScreenConstant.defaultHeightTen,
+                              // ),
+                              // Obx(
+                              //   () => controller
+                              //           .temporaryDocImagePath.value.isEmpty
+                              //       ? const Offstage()
+                              //       : Padding(
+                              //           padding: EdgeInsets.symmetric(
+                              //               horizontal: ScreenConstant
+                              //                   .defaultWidthTwenty),
+                              //           child: Text(
+                              //             AppStrings.image.tr,
+                              //             style: context.textTheme.titleMedium,
+                              //           ),
+                              //         ),
+                              // ),
+                              // Obx(
+                              //   () => controller
+                              //           .temporaryDocImagePath.value.isEmpty
+                              //       ? const Offstage()
+                              //       : Container(
+                              //           height: ScreenConstant.defaultHeightTen,
+                              //         ),
+                              // ),
+                              // Obx(
+                              //   () => controller
+                              //           .temporaryDocImagePath.value.isEmpty
+                              //       ? const Offstage()
+                              //       : Center(
+                              //           child: ClipRRect(
+                              //             borderRadius: BorderRadius.circular(20),
+                              //             child: SizedBox(
+                              //               height: ScreenConstant
+                              //                   .defaultHeightOneForty,
+                              //               width: ScreenConstant
+                              //                   .defaultWidthOneSeventy,
+                              //               child: Image.file(
+                              //                 fit: BoxFit.fitWidth,
+                              //                 File(controller
+                              //                     .temporaryDocImagePath.value),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ),
+                              // ),
+                              // Obx(
+                              //   () => controller
+                              //           .temporaryDocImagePath.value.isEmpty
+                              //       ? const Offstage()
+                              //       : Container(
+                              //           height: ScreenConstant.defaultHeightTen,
+                              //         ),
+                              // ),
+                              // Obx(
+                              //   () => controller
+                              //           .temporaryDocImagePath.value.isEmpty
+                              //       ? UniversalButtonWidget(
+                              //           ontap: () {
+                              //             chooseCameraOrGalleryModalBottomSheetMenu(
+                              //                 context,
+                              //                 (XFile? selectedImage) async {
+                              //               controller.temporaryDocImageName
+                              //                   .value = selectedImage!.name;
+                              //               controller.temporaryDocImagePath
+                              //                   .value = selectedImage.path;
+                              //             });
+                              //           },
+                              //           color: Get.theme.dividerColor,
+                              //           margin: EdgeInsets.symmetric(
+                              //             vertical:
+                              //                 ScreenConstant.defaultHeightFifteen,
+                              //             horizontal:
+                              //                 ScreenConstant.defaultWidthTwenty,
+                              //           ),
+                              //           leadingIconvisible: true,
+                              //           title: AppStrings.addImage.tr,
+                              //           titleTextStyle: TextStyles
+                              //               .textStyleRegular
+                              //               .apply(color: CustomColor.white),
+                              //         )
+                              //       : UniversalButtonWidget(
+                              //           ontap: () {
+                              //             controller.temporaryDocImageName.value =
+                              //                 "";
+                              //             controller.temporaryDocImagePath.value =
+                              //                 "";
+                              //           },
+                              //           color: CustomColor.orange,
+                              //           margin: EdgeInsets.symmetric(
+                              //             vertical:
+                              //                 ScreenConstant.defaultHeightFifteen,
+                              //             horizontal:
+                              //                 ScreenConstant.defaultWidthTwenty,
+                              //           ),
+                              //           leadingIconvisible: true,
+                              //           title: AppStrings.deleteImage.tr,
+                              //           titleTextStyle: TextStyles
+                              //               .textStyleRegular
+                              //               .apply(color: CustomColor.white),
+                              //         ),
+                              // ),
+                              // Container(
+                              //   height: ScreenConstant.defaultHeightTen,
+                              // ),
+                              // UniversalButtonWidget(
+                              //   ontap: () {
+                              //     if (controller
+                              //         .titleController.text.isNotEmpty) {
+                              //       if (controller
+                              //           .descController.text.isNotEmpty) {
+                              //         if (controller
+                              //             .temporaryDocImagePath.value.isNotEmpty) {
+                              //           controller.addData(
+                              //               controller.titleController.text,
+                              //               controller.descController.text,
+                              //               controller
+                              //                   .temporaryDocImagePath.value);
+                              //           controller.descController.text = "";
+                              //           controller.titleController.text = "";
+                              //           controller.temporaryDocImagePath.value =
+                              //               "";
+                              //           controller.temporaryDocImageName.value =
+                              //               "";
+                              //         } else {
+                              //           showFailureSnackBar(
+                              //               AppStrings.somethingWentWrong.tr,
+                              //               AppStrings.needAImage.tr);
+                              //         }
+                              //       } else {
+                              //         showFailureSnackBar(
+                              //             AppStrings.somethingWentWrong.tr,
+                              //             AppStrings.needADescription.tr);
+                              //       }
+                              //     } else {
+                              //       showFailureSnackBar(
+                              //           AppStrings.somethingWentWrong.tr,
+                              //           AppStrings.title.tr);
+                              //     }
+                              //   },
+                              //   color: Get.theme.dividerColor,
+                              //   margin: EdgeInsets.symmetric(
+                              //     vertical: ScreenConstant.defaultHeightFifteen,
+                              //     horizontal: ScreenConstant.defaultWidthTwenty,
+                              //   ),
+                              //   leadingIconvisible: true,
+                              //   title: AppStrings.addVlog.tr,
+                              //   titleTextStyle: TextStyles.textStyleRegular
+                              //       .apply(color: CustomColor.white),
+                              // ),
+                              // Container(
+                              //   height: ScreenConstant.defaultHeightTen,
+                              // ),
+                              // Obx(
+                              //   () => controller.allData.isEmpty
+                              //       ? const Center(
+                              //           child: Text(AppStrings.vlogsListIsEmpty))
+                              //       : Padding(
+                              //           padding: EdgeInsets.symmetric(
+                              //               horizontal: ScreenConstant
+                              //                   .defaultWidthTwenty),
+                              //           child: ListView.builder(
+                              //               physics:
+                              //                   const ClampingScrollPhysics(),
+                              //               shrinkWrap: true,
+                              //               itemCount: controller.allData.length,
+                              //               itemBuilder: (context, index) =>
+                              //                   HomeCardWidget(
+                              //                     title: controller.allData[index]
+                              //                         ["title"],
+                              //                     description: controller
+                              //                         .allData[index]["desc"],
+                              //                     image: controller.allData[index]
+                              //                         ["image"],
+                              //                     onTapDelete: () {
+                              //                       controller.deleteData(
+                              //                           controller.allData[index]
+                              //                               ["id"]);
+                              //                     },
+                              //                     onTapEdit: () {
+                              //                       Get.toNamed(
+                              //                           Routes.UPDATEDETAILS,
+                              //                           arguments: [
+                              //                             controller
+                              //                                     .allData[index]
+                              //                                 ["id"],
+                              //                             controller
+                              //                                     .allData[index]
+                              //                                 ["title"],
+                              //                             controller
+                              //                                     .allData[index]
+                              //                                 ["desc"],
+                              //                             controller
+                              //                                     .allData[index]
+                              //                                 ["image"]
+                              //                           ]);
+                              //                     },
+                              //                   )),
+                              //         ),
+                              // ),
+                              Container(
+                                height: ScreenConstant.defaultHeightForty,
+                              )
+                            ],
+                          )),
+                        ),
                       ),
+                    ],
+                  );
+                }),
+            controller.isLoading.value
+                ? Container(
+                    color: CustomColor.buttonDarkColor.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                  ],
-                );
-              })
-        ],
+                  )
+                : const Offstage()
+          ],
+        ),
       ),
     );
   }

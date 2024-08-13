@@ -1,0 +1,118 @@
+import 'package:cv_dragon/app/modeules/Home/controller/home_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../common/TextStyles.dart';
+import '../../../../common/app_colors.dart';
+import '../../../../common/widgets/universal_button_widget.dart';
+import '../../../../device_manager/screen_constants.dart';
+import '../../../../utils/common_text_form_field.dart';
+import '../../../../utils/text_utils/app_strings.dart';
+
+class AddNewBookScreen extends GetView<HomeController> {
+  const AddNewBookScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Add New Book",
+          style: TextStyles.subtitleSmall.copyWith(
+              color: CustomColor.white.withOpacity(0.8),
+              fontSize: 16,
+              fontWeight: FontWeight.w800),
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: ScreenConstant.defaultWidthTwenty),
+        child: ListView(
+          children: [
+            Text(
+              "Handle",
+              style: TextStyles.subtitleSmall.copyWith(
+                  color: CustomColor.primaryDeepblue.withOpacity(0.8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightFour,
+            ),
+            DefaultEditText(
+              type: Type.stageName,
+              prefixIcon: Container(),
+              style: TextStyles.textFieldTextStyleSemiBold,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              controller: controller.handleController,
+              hintText: AppStrings.enterDescription.tr,
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightTen,
+            ),
+            Text(
+              "Publisher",
+              style: TextStyles.subtitleSmall.copyWith(
+                  color: CustomColor.primaryDeepblue.withOpacity(0.8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightFour,
+            ),
+            DefaultEditText(
+              type: Type.stageName,
+              prefixIcon: Container(),
+              style: TextStyles.textFieldTextStyleSemiBold,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              controller: controller.publisherController,
+              hintText: AppStrings.enterPublisher.tr,
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightTen,
+            ),
+            Text(
+              "ISBN",
+              style: TextStyles.subtitleSmall.copyWith(
+                  color: CustomColor.primaryDeepblue.withOpacity(0.8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+            Container(
+              height: ScreenConstant.defaultHeightFour,
+            ),
+            DefaultEditText(
+              type: Type.stageName,
+              prefixIcon: Container(),
+              style: TextStyles.textFieldTextStyleSemiBold,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              controller: controller.isbnController,
+              hintText: AppStrings.enterISBN.tr,
+            ),
+
+            Container(
+              height: ScreenConstant.defaultHeightTwentyThree,
+            ),
+            UniversalButtonWidget(
+              ontap: () async {
+
+              },
+              color: CustomColor.orange,
+              margin: EdgeInsets.symmetric(
+                vertical: ScreenConstant.defaultHeightFifteen,
+                horizontal: ScreenConstant.defaultWidthTwenty,
+              ),
+              leadingIconvisible: true,
+              title: AppStrings.update.tr,
+              titleTextStyle:
+              TextStyles.textStyleRegular.apply(color: CustomColor.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

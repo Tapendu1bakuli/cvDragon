@@ -1,6 +1,17 @@
 class AppStrings{
   //Nuritopia
+  static String get noInternetConnection => "noInternetConnection";
+  static String get apiNotRespondingAtTime => "apiNotRespondingAtTime";
+  static String get errorOccuredWithCode => "errorOccuredWithCode";
+
+  static String get BadRequestException => "BadRequestException";
+  static String get FetchDataException => "FetchDataException";
+  static String get ApiNotResponding => "ApiNotResponding";
+  static String get UnAuthorizedException => "UnAuthorizedException";
+  static const String noNetworkFound =
+      "No network found please check your internet connection";
   static const String welcomeToNuritopia = "Welcome to NURITOPIA 2D";
+  static const String delete = "Delete";
   static const String welcomeToCVDragon = "Welcome to cvDragon";
   static const String updateDetails = "Update details";
   static const String toggleBetweenTheme = "Choose Theme";
@@ -12,8 +23,13 @@ class AppStrings{
   static const String deleteImage = "Delete image";
   static const String updateVlog = "Update vlog";
   static const String enterTitle = "Enter Title";
-  static const String enterDescription = "Enter Description";
+  static const String enterDescription = "Enter handle";
+  static const String enterPublisher = "Enter publisher";
+  static const String enterISBN = "Enter isbn";
+  static const String enterPages = "Enter pages";
   static const String vlogsListIsEmpty = "Vlogs list is empty.";
+  static const String listsOfBooks = "List of books";
+  static const String numberOfBooks = "Number of books: ";
   static const String title = "Title: ";
   static const String description = "Description: ";
   static const String image = "Image: ";
