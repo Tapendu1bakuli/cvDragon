@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712227319756",
+    "project_id": "blueberry-a70cc",
+    "storage_bucket": "blueberry-a70cc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712227319756:android:8820ce1301c7b738673769",
+        "android_client_info": {
+          "package_name": "com.example.cv_dragon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV4xzbAsFuurOTLOtOz4oOmxuqyHPR-g8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
